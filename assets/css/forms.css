@@ -1,0 +1,169 @@
+/* change this if we need a sidebar to the right later */
+.main_body {
+	margin: 0% 6% 0% 6%; 
+}
+
+
+.form_submission {
+	border: 1px solid green;
+		background-color: #fcedc5;
+		border-radius: 8px;
+	width: auto;
+	height: auto;
+	
+	margin: 3% 15% 5% 15%;
+	padding: 25px 25px 25px 25px;
+	display: block;
+	color: black;
+}
+
+.form_button {
+	width: auto;
+	border-radius: 5px;
+	margin: 15px 0px 5px 0px;
+}
+
+.text_bar {
+	width: 20%;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+	text-align: center;
+	margin: 0px;
+	height: auto;
+}
+
+.bg-green {
+	background-color: green;
+	color: white;
+}
+
+.input_box {
+	margin: 0px;
+	width: 80%;
+	padding: 0px 15px;
+	height: auto;
+}
+
+.left-rounded {
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.right-rounded {
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+textarea.input_box {
+	padding: 15px 15px;
+}
+
+
+.height_100 {
+	height: 100px;
+}
+
+.height_200 {
+	height: 200px;
+}
+
+input[type="file"] {
+	display: none;
+}
+
+
+.file_upload {
+	border-radius: 5px;
+
+	width: 10em;
+	height: 1.8em;
+
+	margin: 15px 0px 0px 0px;
+	padding: 0px 5px;
+
+	border:1px solid green;
+	color: white;
+	text-align: center;
+	align-items: center;
+	font-size: 0.9em;
+	background: green; 
+	line-height: 1.7em;
+}
+
+.file_upload:hover {
+	cursor:pointer;
+	background: rgb(83, 141, 83);
+}
+
+
+
+.container-row {
+	display:flex;
+	align-items:stretch;
+	justify-content:space-around;
+	margin-bottom: 5px;
+}
+
+.container-row-50 {
+	display: flex;
+	align-items:stretch;
+	justify-content:space-around;
+	width: 50%;
+	margin: 0px 2px;
+}
+
+.container-row-file {
+	display:flex;
+	align-items:baseline;
+	justify-content:center;
+	margin-bottom: 5px;
+}
+
+.container-radio {
+	display:flex;
+	align-items:stretch;
+	justify-content:left;
+	margin-bottom: 5px;
+	width: 50%;
+}
+
+.container-radio-section {
+	display: block;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 15px;
+}
+
+.container-radio-row {
+	display: flex;
+	margin-top: 2px;
+}
+input.radio-button {
+	height: auto;
+	margin-top: 5px;
+	margin-right: 10px;
+}
+
+.container-checkbox-row {
+	display:flex;
+	align-items:stretch;
+	justify-content:left;
+	margin-bottom: 5px;
+	padding-top: 10px;
+}
+
+input.checkbox-button {
+	margin-right: 20px;
+}
+
+label.radio-label {
+
+}
+
+label.checkbox-label {
+
+}
+/* have custom button design for uploading *?
+input[type="file"] {
+	display: none;
+}

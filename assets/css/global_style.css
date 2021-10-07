@@ -1,0 +1,118 @@
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+	margin: 0px 0px;
+	background-color:rgb(18, 36, 26); /* rgb(13, 48, 38);*/
+	color: white;
+}
+
+textarea {
+	font-family:Verdana, Geneva, Tahoma, sans-serif;
+	border: 0px;
+}
+h3 {
+	margin-bottom: 0px;
+}
+
+p {
+	margin: 4px 0px;
+}
+
+header {
+
+	background-color: #fcedc5;
+    /*content is spaced based on the space between each element*/
+	display: flex;
+	padding: 0% 3%;
+	align-items: center;
+	height: auto;
+    justify-content: space-between;
+	color: rgb(20, 22, 22);
+}
+
+.header_title {
+	padding: 0px 25px;
+}
+
+
+/* div to hold buttons together */
+.nav_menu {
+	padding: 5px;
+	margin: 0px 0px;
+	text-align: center;
+	height: auto;
+}
+
+input {
+	margin: 0px;
+	padding: 0px 15px;
+	height: 40px;
+	border: 0px;
+}
+
+input.nav_search_bar {
+	float: left;
+	margin: 0px;
+	padding: 0px 15px;
+	height: 40px;
+}
+
+.nav_button, .form_button {
+	color: white;
+	background: green;
+	float: left;
+	margin: 0px;
+	padding: 0px 15px;
+	height: 40px;
+	border: 0px;	
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+}
+
+.nav_button_text {
+	margin-left: 5px;
+}
+
+.form_button_text {
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
+.nav_button:hover, .form_button:hover {
+	background: rgb(83, 141, 83);
+}
+
+button {
+	cursor: pointer;
+}
+
+footer {
+
+	background-color: #fcedc5;
+    /*content is spaced based on the space between each element*/
+	display: flex;
+	padding: 0% 10%;
+	align-items: center;
+    justify-content: center;
+	margin-top: 25px;
+	padding-bottom: 20px;
+	color: rgb(20, 22, 22);
+}
+
+
+
+/* change this in another style sheet if we need a sidebar to the right */
+.main_body {
+	margin: 0% 6% 0% 6%; 
+}
+
+.main_section {
+	border-top: 1px solid green;
+	margin: 10px 0px;
+}
+
+.title {
+	width: auto;
+	text-align: left;
+	border-bottom: 1px solid green;
+}

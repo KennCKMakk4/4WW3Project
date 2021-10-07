@@ -1,0 +1,50 @@
+/* change this if we need a sidebar to the right later */
+.main_body {
+	margin: 0% 6%; 
+}
+
+
+.objSplash {
+	margin: 3% 15% 5% 15%;
+	width: auto;
+}
+
+.ratings_bar {
+	display: flex;
+	align-items: center;
+}
+
+
+h3.rating {
+	margin: 2px 0px 5px 0px;
+}
+
+h4.rating  {
+	margin: 2px 0px 3px 0px;
+}
+
+.ratings_star {
+	margin-top: 4px;
+	margin-left: 10px;
+	padding: 0px;
+}
+
+
+/* map image */
+.img_container {	
+	display: flex;
+	justify-content: left;
+	margin-bottom: 15px;
+	width: auto;
+}
+.img_object {
+	width: inherit;
+	height: auto;
+}
+
+.review-section {
+	border: 1px solid green;
+	border-radius: 5px;
+	padding: 5px 25px;
+	margin-bottom: 15px;
+}
