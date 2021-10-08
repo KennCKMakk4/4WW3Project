@@ -75,6 +75,14 @@ input.nav_search_bar {
 
 .nav_button_text {
 	margin-left: 5px;
+	cursor: pointer;
+}
+
+
+@media only screen and (max-width: 1024px) {
+	.nav_button_text {
+		display: none;
+	}
 }
 
 .form_button_text {
@@ -105,8 +113,20 @@ footer {
 
 
 /* change this in another style sheet if we need a sidebar to the right */
+
+
+
 .main_body {
 	margin: 0% 6% 0% 6%; 
+}
+
+
+
+/* for smaller screens than 512, remove margins */
+@media only screen and (max-width: 512px) {
+	.main_body {
+		margin: 0% 1%; 
+	}
 }
 
 .main_section {
