@@ -39,8 +39,8 @@ h4.rating  {
 }
 
 /* special resizing for smaller google maps version */
-.img_container_auto {
-	width: 50%;
+.img_container_60 {
+	width: 60%;
 }
 
 .img_object {
