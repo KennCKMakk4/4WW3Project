@@ -1,2 +1,5 @@
 # 4WW3Project
-4WW3 2021 - Final Project
+Link to server: 
+
+Kenneth Mak, makk4, 001318946
+

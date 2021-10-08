@@ -3,6 +3,10 @@ body {
 	margin: 0px 0px;
 	background-color:rgb(18, 36, 26); /* rgb(13, 48, 38);*/
 	color: white;
+
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh; /* this makes the body stretch entire viewport, so footer rests at bottom */
 }
 
 textarea {
@@ -92,11 +96,10 @@ footer {
     /*content is spaced based on the space between each element*/
 	display: flex;
 	padding: 0% 10%;
-	align-items: center;
-    justify-content: center;
-	margin-top: 25px;
 	padding-bottom: 20px;
 	color: rgb(20, 22, 22);
+
+	margin-top: auto;
 }
 
 

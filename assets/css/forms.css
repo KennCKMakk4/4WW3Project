@@ -1,13 +1,7 @@
-/* change this if we need a sidebar to the right later */
-.main_body {
-	margin: 0% 6% 0% 6%; 
-}
-
-
-.form_submission {
+.form_submission, .form_signin, .form_search {
 	border: 1px solid green;
-		background-color: #fcedc5;
-		border-radius: 8px;
+	background-color: #fcedc5;
+	border-radius: 8px;
 	width: auto;
 	height: auto;
 	
@@ -17,19 +11,28 @@
 	color: black;
 }
 
+.form_signin {
+	margin: 3% 30% 5% 30%;
+	padding: 25px 25px 15px 25px;
+}
+
 .form_button {
 	width: auto;
 	border-radius: 5px;
 	margin: 15px 0px 5px 0px;
 }
 
-.text_bar {
+.text_bar, .text_bar_long {
 	width: 20%;
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	text-align: center;
 	margin: 0px;
 	height: auto;
+}
+
+.text_bar_long {
+	width: 40%;
 }
 
 .bg-green {
@@ -161,7 +164,7 @@ label.radio-label {
 }
 
 label.checkbox-label {
-
+	margin-top:10px;
 }
 /* have custom button design for uploading *?
 input[type="file"] {

@@ -1,0 +1,23 @@
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.8),
+                       rgba(0, 0, 0, 0.8)), url(../img/background/2.jpg);
+    background-size: cover;
+    width: 100%;
+}
+
+.main_body {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    text-align: center;
+}
+
+
+.main_title {
+    display: center;
+}   
+
+.longer_bar {
+    width: 100%;
+    margin-top: 15px;
+}
