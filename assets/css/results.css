@@ -21,7 +21,7 @@ img.img_object {
 
 /* border around the entire table */
 .results_table {
-	margin: 15px auto 15px auto;
+	margin: 15px auto 15px;
 	border: 2px solid white;
 }
 
@@ -36,6 +36,12 @@ td {
 	align-items:unset;
 	vertical-align:unset;
 	padding: 15px;
+}
+
+@media only screen and (max-width: 767px) { 
+	td {
+		padding: 0;
+	}
 }
 
 /* hide underlining and colouring of links inside table */

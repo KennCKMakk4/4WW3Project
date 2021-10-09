@@ -79,9 +79,23 @@ input.nav_search_bar {
 }
 
 
+/* when screen is small, start hiding the words and show only symbols on the header bar */
 @media only screen and (max-width: 1024px) {
+	header {
+		padding: 0% 0%;
+	}
+
+	.nav_menu {
+		padding: 0px;
+	}
+	/* hide text from header */
 	.nav_button_text {
 		display: none;
+	}
+
+	/* align the buttons to the right to look more appealing */
+	.nav_button {
+		float: right;
 	}
 }
 
@@ -125,7 +139,7 @@ footer {
 
 
 /* for smaller screens than 512, remove margins */
-@media only screen and (max-width: 512px) {
+@media only screen and (max-width: 768px) {
 	.main_body {
 		margin: 0% 1%; 
 	}
@@ -143,7 +157,7 @@ footer {
 }
 
 /* container-row styles are quick ways of algining divs within them horizontally */
-.container-row {
+.container-row, .container-row-50 {
 	display:flex;
 	align-items:stretch;
 	justify-content:space-around;
@@ -152,9 +166,22 @@ footer {
 
 /* 2 'row-50' makes up one container (taken from bootstrap ideology) */
 .container-row-50 {
-	display: flex;
-	align-items:stretch;
-	justify-content:space-around;
 	width: 50%;
 	margin: 0px 2px;
+}
+
+
+/* when smaller than 768px, we start making all in-line elements become blocks instead (i.e. vertical instead of horizontal) */
+@media only screen and (max-width: 767px) {
+/* container-row styles are quick ways of algining divs within them horizontally */
+	.container-row, .container-row-50 {
+		display:block;
+		margin-bottom: 15px;
+	}
+
+	/* 2 'row-50' makes up one container (taken from bootstrap ideology) */
+	.container-row-50 {
+		width: auto;
+		margin: 0px 0px 5px 0px;
+	}
 }

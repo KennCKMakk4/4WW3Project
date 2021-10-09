@@ -14,6 +14,13 @@
 	align-items: center;
 }
 
+.ratings_star {
+	margin-top: 4px;
+	margin-left: 10px;
+	padding: 0px;
+}
+
+
 
 h3.rating {
 	margin: 2px 0px 5px 0px;
@@ -23,23 +30,11 @@ h4.rating  {
 	margin: 2px 0px 3px 0px;
 }
 
-.ratings_star {
-	margin-top: 4px;
-	margin-left: 10px;
-	padding: 0px;
-}
-
-
 /* image container to take up all of available slot */
 .img_container, .img_container_auto {	
 	display: flex;
 	justify-content: left;
 	margin-bottom: 15px;
-	width: 100%;
-}
-
-/* special resizing for smaller google maps version */
-.img_container_60 {
 	width: 100%;
 }
 
@@ -62,7 +57,6 @@ div.obj_add_map {
 
 /* div for the video element; it is placed next to a container-row-50, so max is 40% width */
 div.obj_vid_container {
-	float:right;
 	width: 60%;
 }
 
@@ -71,4 +65,33 @@ video.obj_video {
 	margin: auto 0%;
 	height: 100%;
 	width: 100%;
+}
+
+
+/* when screen starts displaying elements vertically instead of horizontally, make the video expand */
+@media only screen and (max-width: 767px) {
+	.objSplash {
+		margin: 3% 2% 5%;
+		width: auto;
+	}
+	
+	div.obj_add_map {
+		width: 100%;
+	}
+	div.obj_vid_container {
+		width: 100%;
+	}
+	
+	/* separate name and star images */
+	.ratings_bar {
+		display: block;
+	}
+
+	/* but keep stars inline */
+	.ratings_star {
+		display: flex;
+		margin-left: 0px;
+	}
+
+
 }
