@@ -56,18 +56,18 @@ h4.rating  {
 }
 
 /* div for address and map */
-div.obj_add_map {
+.obj_add_map {
 	width: 39%;
 }
 
 /* div for the video element; it is placed next to a container-row-50, so max is 40% width */
-div.obj_vid_container {
+.obj_vid_container {
 	float:right;
 	width: 60%;
 }
 
 /* video class inside container; take up full space if possible  */
-video.obj_video {
+.obj_video {
 	margin: auto 0%;
 	height: 100%;
 	width: 100%;
