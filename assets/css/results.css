@@ -1,5 +1,5 @@
 
-/* google maps sizing */
+/*  the first section showing a google map of results*/
 .objSplash {
 	margin: 3% 15% 5% 15%;
 	width: auto;
@@ -38,6 +38,7 @@ td {
 	padding: 15px;
 }
 
+/* reduce padding on lower width */
 @media only screen and (max-width: 767px) { 
 	td {
 		padding: 0;

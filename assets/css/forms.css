@@ -25,6 +25,12 @@
 	margin: 15px 0px 5px 0px;
 }
 
+/* specific placement to align */
+.form_button_text {
+	margin-left: 5px;
+	margin-top: 5px;
+}
+
 /* for smaller screens than 1024, changes margins to give more space */
 @media only screen and (max-width: 1024px) {
 	.form_submission, .form_signin, .form_search {
@@ -67,6 +73,7 @@
 	height: auto;
 }
 
+/* some quick classes for assigning objects some rounded borders */
 .left-rounded {
 	border-top-left-radius: 5px;
 	border-bottom-left-radius: 5px;
@@ -99,8 +106,7 @@
 	}
 
 
-	/* text bar and input bar is now shown vertically - changing this class to better fit it */
-
+	/* text bar and input bar is now shown vertically - changing this rounded borders to better fit it */
 	/* usually for labels on the left; labels now on top */
 	.left-rounded {
 		border-top-left-radius: 5px;
@@ -118,7 +124,6 @@ textarea.input_box {
 	padding: 15px 15px;
 }
 
-
 .height_100 {
 	height: 100px;
 }
@@ -127,11 +132,12 @@ textarea.input_box {
 	height: 200px;
 }
 
+/* done to change the upload input button appearance */
 input[type="file"] {
 	display: none;
 }
 
-
+/* new apprearance for upload button */
 .file_upload {
 	border-radius: 5px;
 
@@ -155,22 +161,13 @@ input[type="file"] {
 	background: rgb(83, 141, 83);
 }
 
-
+/* container specifically for file upload divs */
 .container-row-file {
 	display:flex;
 	align-items:baseline;
 	justify-content:center;
 	margin-bottom: 5px;
 }
-
-.container-radio {
-	display:flex;
-	align-items:stretch;
-	justify-content:left;
-	margin-bottom: 5px;
-	width: 50%;
-}
-
 
 /* when smaller than 768px, we start making all in-line elements become blocks instead (i.e. vertical instead of horizontal) */
 @media only screen and (max-width: 767px) {
@@ -181,6 +178,16 @@ input[type="file"] {
 	
 }
 
+/* container to hold a section title + radios inside a div */
+.container-radio {
+	display:flex;
+	align-items:stretch;
+	justify-content:left;
+	margin-bottom: 5px;
+	width: 50%;
+}
+
+/* holding all radio options */
 .container-radio-section {
 	display: block;
 	padding-top: 5px;
@@ -188,16 +195,24 @@ input[type="file"] {
 	padding-left: 15px;
 }
 
+/* radio option and label describing it */
 .container-radio-row {
 	display: flex;
 	margin-top: 2px;
 }
+
+
 input.radio-button {
 	height: auto;
 	margin-top: 5px;
 	margin-right: 10px;
 }
 
+label.radio-label {
+
+}
+
+/* div for checkbox + description */
 .container-checkbox-row {
 	display:flex;
 	align-items:stretch;
@@ -208,10 +223,6 @@ input.radio-button {
 
 input.checkbox-button {
 	margin-right: 20px;
-}
-
-label.radio-label {
-
 }
 
 label.checkbox-label {

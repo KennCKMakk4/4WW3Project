@@ -3,17 +3,19 @@
 	margin: 0% 6%; 
 }
 
-
+/* the first section of the object; holds a picture + reviews of the selected location */
 .objSplash {
 	margin: 3% 15% 5% 15%;
 	width: auto;
 }
 
+/* holds 5 stars inline */
 .ratings_bar {
 	display: flex;
 	align-items: center;
 }
 
+/* star image */
 .ratings_star {
 	margin-top: 4px;
 	margin-left: 10px;
@@ -21,7 +23,7 @@
 }
 
 
-
+/* special formats for h# when used with ratings */
 h3.rating {
 	margin: 2px 0px 5px 0px;
 }
@@ -30,7 +32,7 @@ h4.rating  {
 	margin: 2px 0px 3px 0px;
 }
 
-/* image container to take up all of available slot */
+/* div - an image container to take up all of available slot */
 .img_container, .img_container_auto {	
 	display: flex;
 	justify-content: left;
@@ -38,10 +40,11 @@ h4.rating  {
 	width: 100%;
 }
 
-.img_object {
+img.img_object {
 	width: inherit;
 	height: auto;
 }
+
 
 .review-section {
 	border: 1px solid green;

@@ -1,3 +1,5 @@
+
+/* adding background image to home page */
 body {
     background-image: linear-gradient(rgba(0, 0, 0, 0.8),
                        rgba(0, 0, 0, 0.8)), url(../img/background/2.jpg);
@@ -5,7 +7,7 @@ body {
     width: 100%;
 }
 
-    
+
 .main_body {
     display: flex;
     margin: auto;

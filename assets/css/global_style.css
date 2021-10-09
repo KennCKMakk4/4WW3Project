@@ -1,3 +1,7 @@
+/* global style css is used for ensuring a similar style across all html files. Items such as 
+the header, the footer, buttons, font format, and more are determined here. We also define some
+'container' classes inspired from bootstrap to be able to easily place items inline */
+
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 	margin: 0px 0px;
@@ -21,8 +25,9 @@ p {
 	margin: 4px 0px;
 }
 
-header {
 
+/* defining header for all pages */
+header {
 	background-color: #fcedc5;
     /*content is spaced based on the space between each element*/
 	display: flex;
@@ -33,6 +38,7 @@ header {
 	color: rgb(20, 22, 22);
 }
 
+/* the div for containing the website name */
 .header_title {
 	padding: 0px 25px;
 }
@@ -46,6 +52,7 @@ header {
 	height: auto;
 }
 
+/* input tags */
 input {
 	margin: 0px;
 	padding: 0px 15px;
@@ -53,6 +60,8 @@ input {
 	border: 0px;
 }
 
+/* an old removed feature, where a search bar was kept inside of header 
+later removed when a search.html was needed on its own page */
 input.nav_search_bar {
 	float: left;
 	margin: 0px;
@@ -60,6 +69,7 @@ input.nav_search_bar {
 	height: 40px;
 }
 
+/* defining a button style, such that all buttons have a green background with white text */
 .nav_button, .form_button {
 	color: white;
 	background: green;
@@ -78,6 +88,14 @@ input.nav_search_bar {
 	cursor: pointer;
 }
 
+/* changing color on hover for feedback */
+.nav_button:hover, .form_button:hover {
+	background: rgb(83, 141, 83);
+}
+
+button {
+	cursor: pointer;
+}
 
 /* when screen is small, start hiding the words and show only symbols on the header bar */
 @media only screen and (max-width: 1024px) {
@@ -95,6 +113,7 @@ input.nav_search_bar {
 
 }
 
+/* more specific changes to the nav button to make them look better on smaller resolution */
 @media only screen and (max-width: 606px) {
 	/* align the buttons to the right to look more appealing */
 	.nav_button {
@@ -102,21 +121,8 @@ input.nav_search_bar {
 	}
 }
 
-.form_button_text {
-	margin-left: 5px;
-	margin-top: 5px;
-}
-
-.nav_button:hover, .form_button:hover {
-	background: rgb(83, 141, 83);
-}
-
-button {
-	cursor: pointer;
-}
 
 footer {
-
 	background-color: #fcedc5;
     /*content is spaced based on the space between each element*/
 	display: flex;
@@ -124,22 +130,22 @@ footer {
 	padding-bottom: 20px;
 	color: rgb(20, 22, 22);
 
+	/* used to move footer to very bottom of page each time */
 	margin-top: auto;
 }
 
 
-/* change this in another style sheet if we need a sidebar to the right */
+/* the main body is where all the content should be displayed
+change this in another style sheet if we need a sidebar to the right for a specific html*/
 .main_body {
 	margin: 0% 6% 0% 6%; 
 }
-
 
 @media only screen and (max-width: 1024px) {
 	.main_body {
 		margin: 0% 3% 0% 3%; 
 	}
 }
-
 
 /* for smaller screens than 512, remove margins */
 @media only screen and (max-width: 768px) {
@@ -148,15 +154,16 @@ footer {
 	}
 }
 
-.main_section {
-	border-top: 1px solid green;
-	margin: 10px 0px;
-}
-
 .title {
 	width: auto;
 	text-align: left;
 	border-bottom: 1px solid green;
+}
+
+/* subsections inside of main body */
+.main_section {
+	border-top: 1px solid green;
+	margin: 10px 0px;
 }
 
 /* container-row styles are quick ways of algining divs within them horizontally */
