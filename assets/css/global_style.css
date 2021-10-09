@@ -86,13 +86,16 @@ input.nav_search_bar {
 	}
 
 	.nav_menu {
-		padding: 0px;
+		padding: 1px 0px 0px 4px;
 	}
 	/* hide text from header */
 	.nav_button_text {
 		display: none;
 	}
 
+}
+
+@media only screen and (max-width: 606px) {
 	/* align the buttons to the right to look more appealing */
 	.nav_button {
 		float: right;
