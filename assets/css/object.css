@@ -67,7 +67,7 @@ div.obj_vid_container {
 }
 
 /* video class inside container; take up full space if possible  */
-div.obj_video {
+video.obj_video {
 	margin: auto 0%;
 	height: 100%;
 	width: 100%;
