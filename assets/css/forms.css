@@ -110,22 +110,6 @@ input[type="file"] {
 }
 
 
-
-.container-row {
-	display:flex;
-	align-items:stretch;
-	justify-content:space-around;
-	margin-bottom: 5px;
-}
-
-.container-row-50 {
-	display: flex;
-	align-items:stretch;
-	justify-content:space-around;
-	width: 50%;
-	margin: 0px 2px;
-}
-
 .container-row-file {
 	display:flex;
 	align-items:baseline;

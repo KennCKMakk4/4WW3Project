@@ -111,15 +111,17 @@ footer {
 }
 
 
-
 /* change this in another style sheet if we need a sidebar to the right */
-
-
-
 .main_body {
 	margin: 0% 6% 0% 6%; 
 }
 
+
+@media only screen and (max-width: 1024px) {
+	.main_body {
+		margin: 0% 3% 0% 3%; 
+	}
+}
 
 
 /* for smaller screens than 512, remove margins */
@@ -138,4 +140,21 @@ footer {
 	width: auto;
 	text-align: left;
 	border-bottom: 1px solid green;
+}
+
+/* container-row styles are quick ways of algining divs within them horizontally */
+.container-row {
+	display:flex;
+	align-items:stretch;
+	justify-content:space-around;
+	margin-bottom: 5px;
+}
+
+/* 2 'row-50' makes up one container (taken from bootstrap ideology) */
+.container-row-50 {
+	display: flex;
+	align-items:stretch;
+	justify-content:space-around;
+	width: 50%;
+	margin: 0px 2px;
 }

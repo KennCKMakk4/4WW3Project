@@ -5,6 +5,7 @@ body {
     width: 100%;
 }
 
+    
 .main_body {
     display: flex;
     margin: auto;
@@ -12,6 +13,14 @@ body {
     text-align: center;
 }
 
+@media only screen and (max-width: 1023px) {
+    .main_body {
+        display: flex;
+        margin: 5% auto;
+        align-items: center;
+        text-align: center;
+    }
+}
 
 .main_title {
     display: center;

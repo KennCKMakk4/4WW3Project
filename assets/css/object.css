@@ -40,7 +40,7 @@ h4.rating  {
 
 /* special resizing for smaller google maps version */
 .img_container_60 {
-	width: 60%;
+	width: 100%;
 }
 
 .img_object {
@@ -53,4 +53,22 @@ h4.rating  {
 	border-radius: 5px;
 	padding: 5px 25px;
 	margin-bottom: 15px;
+}
+
+/* div for address and map */
+div.obj_add_map {
+	width: 39%;
+}
+
+/* div for the video element; it is placed next to a container-row-50, so max is 40% width */
+div.obj_vid_container {
+	float:right;
+	width: 60%;
+}
+
+/* video class inside container; take up full space if possible  */
+video.obj_video {
+	margin: auto 0%;
+	height: 100%;
+	width: 100%;
 }
