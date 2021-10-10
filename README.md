@@ -36,3 +36,11 @@ At the moment, clicking on the ``Search`` button regardless of inputs will take 
 
 **[registration.html](http://18.189.211.159/RangersWatch/registration.html)** can be accessed with the fifth button on the navigation menu. This brings you to a sign-up/registration page to create an account. 
 
+## Additional Notes
+### Project Organization
+```html``` files are all located in the root folder. ```css``` styling sheets are located inside the ```assets/css``` folder. All additional images and videos can be located inside the ```assets/img``` and ```assets/media``` folder respectively.
+
+### CSS organization and styling 
+The most important `css` file is `global_style.css`. This determines the styling for most of the site (i.e. the header, footer, navigation menu, colors). After that, the rest of the `css` files are then used for more specific purposes where applicable. For example, `main.css` is used for styling `main.html`, and `results.css` is used for styling `results.html`.
+
+`forms.css` is a mix of both ideas, and is used whenever a form needs to be created on the screen to receive user input. This is used in `registration.html`, `search.html`, `signin.html`, and `submission.html`. Essentially, whenever we need input from the user, we will then call this styling sheet in. We refrained from including this inside `global_style.css` since not every web page will need to create a form.
