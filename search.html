@@ -34,7 +34,7 @@
 						<p class="nav_button_text">Home</p>
 					</div>
 				</a>
-				<!-- return to home page -->
+				<!-- return to search page -->
 				<a href="search.html">
 					<div class="nav_button">
 						<i class="material-icons">search</i>
@@ -68,22 +68,21 @@
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Search</h1></div>
 			
-			<!-- title section of main body -->
+			<!-- creating form - no action yet -->
 			<form class="form_search">
 
-				<!-- search bar -->
-				
+				<!-- search bar - by name-->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">By name</label>
 					<input class="input_box right-rounded" type="text" name="input_search_name" placeholder="Search for nearby archery centers by name">
 				</div>
-
+				<!-- search bar - by location-->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">By location</label>
 					<input class="input_box right-rounded" type="text" name="input_search_loc" placeholder="Search for nearby archery centers by your location">
 				</div>
 
-				<!-- passwords-->
+				<!-- selection options, by rating -->
 				<div class="container-row">
 					<label class="text_bar_long left-rounded bg-green">With Minimum Rating:</label>
 					<select class="input_box right-rounded" name="minrating">
@@ -99,22 +98,21 @@
 
 				<!-- submit button -->
 				<div class="container-row">
-					<!-- hiding input button for now so we can use a link to move things along...
+					<!-- hiding input button for now so we can use a link to move to another html...
 					<input type="submit" value="Submit" class="form_button">
 					-->
-					
 					<a href="results.html">
 						<div class="form_button">
 							<i class="material-icons">search</i>
 							<p class="form_button_text">Search</p>
 						</div>
-						<!-- same thing here ; we're using a regular div instead of button so that we can move along to the results page
-							<button class="form_button">
-								<i class="material-icons">search</i>
-								<p class="form_button_text">Search</p>
-							</button>
-						-->
 					</a> 
+					<!-- same thing here ; we're using a regular div instead of button so that we can move along to the results page
+						<button class="form_button">
+							<i class="material-icons">search</i>
+							<p class="form_button_text">Search</p>
+						</button>
+					-->
 				</div>
 			</form>
 		</div>

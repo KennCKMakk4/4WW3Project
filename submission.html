@@ -34,7 +34,7 @@
 						<p class="nav_button_text">Home</p>
 					</div>
 				</a>
-				<!-- return to home page -->
+				<!-- return to search page -->
 				<a href="search.html">
 					<div class="nav_button">
 						<i class="material-icons">search</i>
@@ -68,15 +68,20 @@
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
 			
-			<!-- title section of main body -->
+			<!-- start of form - no action yet -->
 			<form class="form_submission">
-				<!-- ratings -->
 
+				<!-- using container-row to have all elements in div to be in-line-->
+				<!-- each row has a label and an input; label is class text_bar, inputs are class input_box-->
+				<!-- allows for colouring of label, aesthetics -->
+
+				<!-- Name of location -->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Name*</label>
 					<input class="input_box right-rounded" type="text" name="input_name" placeholder="Enter name of the Archery Centre" required>
 				</div>
 
+				<!-- a brief description about this place -->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">About*</label>
 					<textarea class="input_box right-rounded height_200" name="input_about" placeholder="Enter a brief description of this centre" required></textarea>
@@ -101,6 +106,7 @@
 					<label class="text_bar left-rounded bg-green">Longitude*</label>
 					<input class="input_box right-rounded" type="text" name="input_longitude" placeholder="longitude" required>
 				</div>
+				
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Latitude*</label>
 					<input class="input_box right-rounded" type="text" name="input_latitude" placeholder="latitude" required>
