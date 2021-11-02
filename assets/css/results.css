@@ -1,7 +1,7 @@
 
 /*  the first section showing a google map of results*/
 .objSplash {
-	margin: 3% 15% 5% 15%;
+	margin: 3% 5% 5% 5%;
 	width: auto;
 }
 
@@ -14,9 +14,11 @@
 }
 
 /* Making img automatically take width and height of containing */
-img.img_object {
+.img_object {
+	/* width: inherit;
+	height: auto; */
 	width: inherit;
-	height: auto;
+	height: 600px;
 }
 
 /* border around the entire table */
