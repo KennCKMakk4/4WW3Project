@@ -70,7 +70,7 @@
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
 			
 			<!-- start of form - no action yet -->
-			<form class="form_submission" onsubmit="return validate(this)">
+			<form name="submissionForm" class="form_submission" onsubmit="return validate(this)">
 
 				<!-- using container-row to have all elements in div to be in-line-->
 				<!-- each row has a label and an input; label is class text_bar, inputs are class input_box-->
@@ -79,13 +79,13 @@
 				<!-- Name of location -->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Name*</label>
-					<input class="input_box right-rounded" type="text" name="input_name" placeholder="Enter name of the Archery Centre">
+					<input class="input_box right-rounded" type="text" name="input_name" required placeholder="Enter name of the Archery Centre">
 				</div>
 
 				<!-- a brief description about this place -->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">About*</label>
-					<textarea class="input_box right-rounded height_200" name="input_about" placeholder="Enter a brief description of this centre"></textarea>
+					<textarea class="input_box right-rounded height_200" name="input_about" required placeholder="Enter a brief description of this centre"></textarea>
 				</div>
 
 				<div class="container-row">
@@ -103,16 +103,34 @@
 					<textarea class="input_box right-rounded height_100" name="input_address" placeholder="Enter the address of the centre"></textarea>
 				</div>
 
+
+
+				<div class="container-row justify_left ">
+					<!-- button to auto fill in geolocation-->
+					<div class="form_button smaller_margin" name="btn_getLocation" onclick="getLocation()">
+						<i class="material-icons">search</i>
+						<p class="form_button_text">Use My Location</p>
+					</div>
+				</div>
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Longitude*</label>
-					<input class="input_box right-rounded" type="text" name="input_longitude" placeholder="longitude">
+					<input class="input_box right-rounded" 
+						type="text" 
+						name="input_longitude" 
+						required 
+						pattern="^(\+|-)?(?:180(?:(?:\.0{1,9})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,9})?))$"
+						placeholder="longitude">
 				</div>
 				
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Latitude*</label>
-					<input class="input_box right-rounded" type="text" name="input_latitude" placeholder="latitude">
+					<input class="input_box right-rounded" 
+						type="text" 
+						name="input_latitude" 
+						required 
+						pattern="^(\+|-)?(?:90(?:(?:\.0{1,9})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,9})?))$"
+						placeholder="latitude">
 				</div>
-
 				<!-- image uploading -->
 				<!--
 				<div class="container-row-file">

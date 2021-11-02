@@ -84,12 +84,12 @@ function validateDate(input) {
 // Note; other option is ^-?[0-9]{1,3}(?:\.[0-9]{1,10})?$ (one of other answers)
 // {1,6 = decimal points}
 function validateLatitude(input) {
-    let reg = /^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    let reg = /^(\+|-)?(?:90(?:(?:\.0{1,9})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,9})?))$/;
     return reg.test(input);
 }
 
 function validateLongitude(input) {
-    let reg = /^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,6})?))$/;
+    let reg = /^(\+|-)?(?:180(?:(?:\.0{1,9})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,9})?))$/;
     return reg.test(input);
 }
 
@@ -100,4 +100,32 @@ function setValid(element) {
 function setInvalid(element) {
     element.style.backgroundColor = "#ffcccc";
     element.focus();
+}
+
+
+function getLocation() {
+    // TODO: geolocation
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        console.log("Geolocation not accessible or supported");
+    }
+}
+
+function showPosition(position) {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+
+    // find form, then the latitude and longitude elements in the form
+    let form = document.forms["submissionForm"];
+    let lat = form["input_latitude"];
+    let long = form["input_longitude"];
+
+    // write values from geolocation
+    lat.value = position.coords.latitude;
+    long.value = position.coords.longitude;
+
+    // if there was an error before; negate it since it is filled now
+    setValid(lat);
+    setValid(long);
 }
