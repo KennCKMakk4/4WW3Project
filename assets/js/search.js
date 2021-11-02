@@ -6,20 +6,33 @@ function validate(form) {
 
         name.focus();
         setInvalid(name); setInvalid(loc);
-        //getLocation();
         return false;
     }
     setValid(name); setValid(loc);
     console.log("Successful form")
-    return faltruese;
+    return true;
 }
 
 function getLocation() {
-    let form = document.forms["searchForm"];
-    let geoLoc = "hamilton, ontario";
     // TODO: geolocation
-    form["input_search_loc"].value = geoLoc;
-    setValid(name); setValid(loc);
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        console.log("Geolocation not accessible or supported");
+    }
+}
+
+function showPosition(position) {
+    console.log(position.coords.latitude);
+    console.log(position.coords.longitude);
+
+    let geoLoc = position.coords.latitude + ", " + position.coords.longitude;
+    let form = document.forms["searchForm"];
+    let name = form["input_search_name"];
+    let loc = form["input_search_loc"];
+    loc.value = geoLoc;
+    setValid(name);
+    setValid(loc);
 }
 
 function setValid(element) {
