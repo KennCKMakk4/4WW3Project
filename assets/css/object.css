@@ -40,9 +40,10 @@ h4.rating  {
 	width: 100%;
 }
 
-img.img_object {
+.img_object {
 	width: inherit;
-	height: auto;
+	/* height: auto; */
+	height: 500px;
 }
 
 
@@ -95,6 +96,8 @@ video.obj_video {
 		display: flex;
 		margin-left: 0px;
 	}
-
+	.img_object {
+		height: 300px;
+	}
 
 }
