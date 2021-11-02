@@ -80,9 +80,10 @@
 	height: auto;
 }
 
-.input_box:required {
-	border-color: red;
-	border-width: 1px;
+/* https://stackoverflow.com/a/48144022 */
+.input_box:not(:placeholder-shown):invalid {
+    background-color: #ffcccc;
+	color: red;
 }
 
 /* some quick classes for assigning objects some rounded borders */
