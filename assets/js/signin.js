@@ -3,71 +3,54 @@ function validate(form) {
     let lname = form["input_lname"];
     if (fname.value == "") {
         console.log("No first name");
-        setInvalid(fname);
         return false;
     }
-    setValid(fname);
     if (lname.value == "") {
         console.log("No last name");
-        setInvalid(lname);
         return false;
     }
-    setValid(lname);
 
 
     let username = form["input_username"];
     let email = form["input_email"];
     if (username.value == "") {
         console.log("No username");
-        setInvalid(username);
         return false;
     }
-    setValid(username);
     if (email.value == "") {
         console.log("No email");
-        setInvalid(email);
         return false;
     }
     if (!validateEmail(email.value)) {
         console.log("Not a valid email");
-        setInvalid(email);
         return false;
     }
-    setValid(email);
+
     
     let pw1 = form["input_password"];
     let pw2 = form["input_password_confirm"];
     if (pw1.value == "") {
         console.log("No password");
-        setInvalid(pw1);
         return false;
     }
     if (pw2.value == "") {
         console.log("No confirmed password");
-        setInvalid(pw2);
         return false;
     }
     if (pw1.value != pw2.value) {
         console.log("No matching password");
-        setInvalid(pw2);
-        setInvalid(pw1);
         return false;
     }
-    setValid(pw1);
-    setValid(pw2);
 
     let dob = form["input_dob"];
     if (dob.value == "") {
         console.log ("No DoB");
-        setInvalid(dob);
         return false;
     }
     if (!validateDate(dob.value)) {
         console.log("Not a valid date");
-        setInvalid(dob);
         return false;
     }
-    setValid(dob);
 
     console.log("Successful form")
     return true;
@@ -83,11 +66,12 @@ function validateDate(input) {
     return dateReg.test(input);
 }
 
+
+
 function setValid(element) {
     element.style.backgroundColor = "white";
 }
 
 function setInvalid(element) {
     element.style.backgroundColor = "#ffcccc";
-    element.focus();
 }
