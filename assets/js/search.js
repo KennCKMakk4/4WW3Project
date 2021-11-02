@@ -1,4 +1,4 @@
-function validateSearch(form) {
+function validate(form) {
     let name = form["input_search_name"];
     let loc = form["input_search_loc"];
     if (name.value == "" && loc.value == "") {
