@@ -40,12 +40,16 @@ h4.rating  {
 	width: 100%;
 }
 
+/* Making img automatically take width and height of containing */
 .img_object {
 	width: inherit;
-	/* height: auto; */
-	height: 500px;
+	height: auto;
 }
 
+.map_object {
+	width: inherit;
+	height: 600px;
+}
 
 .review-section {
 	border: 1px solid green;
@@ -96,7 +100,7 @@ video.obj_video {
 		display: flex;
 		margin-left: 0px;
 	}
-	.img_object {
+	.map_object {
 		height: 300px;
 	}
 

@@ -1,5 +1,6 @@
 # 4WW3Project
-Link to server: http://18.189.211.159/RangersWatch/main.html
+Link to server: https://kennsite.live/RangersWatch/main.html
+Link to server (using IP address, unsecure): http://18.189.211.159/RangersWatch/main.html
 
 ## Team Name
 Pack Mules
@@ -16,27 +17,27 @@ Kenneth Mak, makk4, 001318946
 Only did a part of task 2, which is the addition of a video element in the submission and object preview page.
 
 ## Site Map
-**[main.html](http://18.189.211.159/RangersWatch/main.html)**
+**[main.html](https://kennsite.live/RangersWatch/main.html)**
 
 is the home page for the project. Can be navigated to at any point with the Home button in the header navigation menu.
 
-**[search.html](http://18.189.211.159/RangersWatch/search.html)**
+**[search.html](https://kennsite.live/RangersWatch/search.html)**
 can be accessed with the second button on the navigation menu, this takes you to the page where you can search for an centre. 
 
-At the moment, clicking on the ``Search`` button regardless of inputs will take you to a sample **results** page.
+At the moment, clicking on the ``Submit`` button will try and validate the form. In order to go to the next page, use the second button `"Search (Move to Results.html)"` to take you to a sample **results** page.
 
-- **[results.html](http://18.189.211.159/RangersWatch/results.html)**    
+- **[results.html](https://kennsite.live/RangersWatch/results.html)**    
   - can only be accessed by selecting the ``Search`` button from the search page. Displays an interactive map of nearby archery centres, as well as a table of nearby archery centres. Clicking on the name of any of the resulting locations, or on the popup pinned on the map, will take you to a sample **objects** page
-- **[object.html](http://18.189.211.159/RangersWatch/object.html)**    
+- **[object.html](https://kennsite.live/RangersWatch/object.html)**    
   - can only be accessed via clicking on the name of a location from the ``Results`` page. Currently shows a sample location. From here, you are able see its current ratings and reviews, its address and location on an interactive map, and a preview video (if applicable).
 
-**[submission.html](http://18.189.211.159/RangersWatch/submission.html)** can be accessed with the third button on the navigation menu. Here you can submit a new location to the database by filling out the details on the form.
+**[submission.html](https://kennsite.live/RangersWatch/submission.html)** can be accessed with the third button on the navigation menu. Here you can submit a new location to the database by filling out the details on the form.
 
 
-**[signin.html](http://18.189.211.159/RangersWatch/signin.html)** can be accessed with the fourth button on the navigation menu. This brings you to a page with a simple login form.
+**[signin.html](https://kennsite.live/RangersWatch/signin.html)** can be accessed with the fourth button on the navigation menu. This brings you to a page with a simple login form.
 
 
-**[registration.html](http://18.189.211.159/RangersWatch/registration.html)** can be accessed with the fifth button on the navigation menu. This brings you to a sign-up/registration page to create an account. 
+**[registration.html](https://kennsite.live/RangersWatch/registration.html)** can be accessed with the fifth button on the navigation menu. This brings you to a sign-up/registration page to create an account. 
 
 ## Additional Notes
 ### Project Organization
