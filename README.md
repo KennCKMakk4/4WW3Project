@@ -2,6 +2,8 @@
 Link to server: https://kennsite.live/RangersWatch/main.html
 Link to server (using IP address, unsecure): http://18.189.211.159/RangersWatch/main.html
 
+Link to GitHub repo: https://github.com/KennCKMakk4/4WW3Project
+
 ## Team Name
 Pack Mules
 
