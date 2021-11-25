@@ -13,7 +13,7 @@
 		<!-- access icons from Google -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		
-		<!-- form validation for search.html -->
+		<!-- form validation for search.php -->
 		<script type="text/javascript" src="assets/js/search.js"></script>
 
         <!-- bootstrap plugin
@@ -24,49 +24,8 @@
 
 
     <body>
-		<header>
-			<div class="header_title"> 
-				<h1>Ranger's Watch</h1>
-			</div>
-
-			<div class="nav_menu">
-				<!-- return to home page -->
-				<a href="main.html">
-					<div class="nav_button">
-						<i class="material-icons">home</i>
-						<p class="nav_button_text">Home</p>
-					</div>
-				</a>
-				<!-- return to search page -->
-				<a href="search.html">
-					<div class="nav_button">
-						<i class="material-icons">search</i>
-						<p class="nav_button_text">Search</p>
-					</div>
-				</a>
-				<!-- submit new location -->
-				<a href="submission.html">
-					<div class="nav_button">
-						<i class="material-icons">add</i>
-						<p class="nav_button_text">Submit</p>
-					</div>
-				</a>
-				<!-- account login -->
-				<a href="signin.html">
-					<div class="nav_button">
-						<i class="material-icons">login</i>
-						<p class="nav_button_text">Sign In</p>
-					</div>
-				</a>
-				<!-- account registration -->
-				<a href="registration.html">
-					<div class="nav_button">
-						<i class="material-icons">person_add</i>
-						<p class="nav_button_text">Sign Up</p>
-					</div>
-				</a>
-			</div>
-		</header>
+		
+		<?php include 'header.inc' ?>
 		
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Search</h1></div>
@@ -112,11 +71,11 @@
 					-->
 					<input class="form_button " type="submit" value="Submit" class="form_button">
 
-					<!-- Move to results.html (temporarily) so that we can move things along -->
-					<a href="results.html">
+					<!-- Move to results.php (temporarily) so that we can move things along -->
+					<a href="results.php">
 						<div class="form_button">
 							<i class="material-icons">search</i>
-							<p class="form_button_text">Search (Move to results.html)</p>
+							<p class="form_button_text">Search (Move to results.php)</p>
 						</div>
 					</a> 
 					<!-- same thing here ; we're using a regular div instead of button so that we can move along to the results page
@@ -129,13 +88,6 @@
 			</form>
 		</div>
 		
-        <footer>
-			<div class="footer_section">
-				<h2> About Ranger's Watch </h2>
-				<p> Ranger's Watch was developed by Kenneth Mak as a final project for course 4WW3 during Fall 2021, at McMaster University. <br> 
-					It tracks and updates archery centres  around your location, providing the overall ratings, 
-					description, and location of a centre. Users are able to submit new or unlisted centres to the database. </p>
-			</div>
-		</footer>
+        <?php include 'footer.inc' ?>
     </body>
 </html>

@@ -27,55 +27,14 @@
 			crossorigin="">
 		</script>
 			
-		<!-- form validation for search.html -->
+		<!-- form validation for search.php -->
 		<script type="text/javascript" src="assets/js/results.js"></script>
     </head>
 
 
     <body onload="initialize()">
-		<header>
-			<div class="header_title"> 
-				<h1>Ranger's Watch</h1>
-			</div>
-
-			<div class="nav_menu">
-				<!-- return to home page -->
-				<a href="main.html">
-					<div class="nav_button">
-						<i class="material-icons">home</i>
-						<p class="nav_button_text">Home</p>
-					</div>
-				</a>
-				<!-- return to search page -->
-				<a href="search.html">
-					<div class="nav_button">
-						<i class="material-icons">search</i>
-						<p class="nav_button_text">Search</p>
-					</div>
-				</a>
-				<!-- submit new location -->
-				<a href="submission.html">
-					<div class="nav_button">
-						<i class="material-icons">add</i>
-						<p class="nav_button_text">Submit</p>
-					</div>
-				</a>
-				<!-- account login -->
-				<a href="signin.html">
-					<div class="nav_button">
-						<i class="material-icons">login</i>
-						<p class="nav_button_text">Sign In</p>
-					</div>
-				</a>
-				<!-- account registration -->
-				<a href="registration.html">
-					<div class="nav_button">
-						<i class="material-icons">person_add</i>
-						<p class="nav_button_text">Sign Up</p>
-					</div>
-				</a>
-			</div>
-		</header>
+		
+		<?php include 'header.inc' ?>
 		
 		<div class="main_body">
 		
@@ -106,7 +65,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td><a href="object.html">Hamilton Archery Centre</a></td>
+							<td><a href="object.php">Hamilton Archery Centre</a></td>
 							<td>3.5 stars<br>254 reviews</td>
 							<td>148 Parkdale Avenue North <br>
 								Lower Level <br>
@@ -114,21 +73,21 @@
 								L8H 5X2</td>
 						</tr>
 						<tr>
-							<td><a href="object.html">Evolve Archery Canada</a></td>
+							<td><a href="object.php">Evolve Archery Canada</a></td>
 							<td>4.6 stars<br>53 reviews</td>
 							<td>375 Wettlaufer Terrace<br>
 								Milton, ON <br>
 								L9T 7N4</td>
 						</tr>
 						<tr>
-							<td><a href="object.html">Silver Swords Armories</a></td>
+							<td><a href="object.php">Silver Swords Armories</a></td>
 							<td>4.4 stars<br>95 reviews</td>
 							<td>180 Burnhamthorpe Road E<br>
 								Oakville, ON <br>
 								L6H 7B5</td>
 						</tr>
 						<tr>
-							<td><a href="object.html">Badenoch Archery</a></td>
+							<td><a href="object.php">Badenoch Archery</a></td>
 							<td>4.6 stars<br>11 reviews</td>
 							<td>15 Badenoch Street<br>
 								Morriston, ON <br>
@@ -139,13 +98,6 @@
 			</div>
 		</div>
 		
-        <footer>
-			<div class="footer_section">
-				<h2> About Ranger's Watch </h2>
-				<p> Ranger's Watch was developed by Kenneth Mak as a final project for course 4WW3 during Fall 2021, at McMaster University. <br> 
-					It tracks and updates archery centres  around your location, providing the overall ratings, 
-					description, and location of a centre. Users are able to submit new or unlisted centres to the database. </p>
-			</div>
-		</footer>
+        <?php include 'footer.inc' ?>
     </body>
 </html>

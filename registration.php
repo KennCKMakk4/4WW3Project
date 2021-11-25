@@ -23,49 +23,7 @@
 
 
     <body>
-		<header>
-			<div class="header_title"> 
-				<h1>Ranger's Watch</h1>
-			</div>
-
-			<div class="nav_menu">
-				<!-- return to home page -->
-				<a href="main.html">
-					<div class="nav_button">
-						<i class="material-icons">home</i>
-						<p class="nav_button_text">Home</p>
-					</div>
-				</a>
-				<!-- return to search page -->
-				<a href="search.html">
-					<div class="nav_button">
-						<i class="material-icons">search</i>
-						<p class="nav_button_text">Search</p>
-					</div>
-				</a>
-				<!-- submit new location -->
-				<a href="submission.html">
-					<div class="nav_button">
-						<i class="material-icons">add</i>
-						<p class="nav_button_text">Submit</p>
-					</div>
-				</a>
-				<!-- account login -->
-				<a href="signin.html">
-					<div class="nav_button">
-						<i class="material-icons">login</i>
-						<p class="nav_button_text">Sign In</p>
-					</div>
-				</a>
-				<!-- account registration -->
-				<a href="registration.html">
-					<div class="nav_button">
-						<i class="material-icons">person_add</i>
-						<p class="nav_button_text">Sign Up</p>
-					</div>
-				</a>
-			</div>
-		</header>
+		<?php include 'header.inc' ?>
 		
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Register a New Account</h1></div>
@@ -168,7 +126,7 @@
 				<div class="container-row">
 					<input type="submit" value="Submit" class="form_button">
 					<!-- old version used for linking to another html page
-					<a href="object.html">
+					<a href="object.php">
 						<button class="form_button">
 							<i class="material-icons">done</i>
 							<p class="form_button_text">Submit</p>
@@ -179,13 +137,6 @@
 			</form>
 		</div>
 		
-        <footer>
-			<div class="footer_section">
-				<h2> About Ranger's Watch </h2>
-				<p> Ranger's Watch was developed by Kenneth Mak as a final project for course 4WW3 during Fall 2021, at McMaster University. <br> 
-					It tracks and updates archery centres  around your location, providing the overall ratings, 
-					description, and location of a centre. Users are able to submit new or unlisted centres to the database. </p>
-			</div>
-		</footer>
+        <?php include 'footer.inc' ?>
     </body>
 </html>
