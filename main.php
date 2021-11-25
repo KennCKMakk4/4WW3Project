@@ -27,12 +27,10 @@
 			<div class="main_title">
 				<h1 id="objTitle">Ranger's Watch</h1>
 				<h2>Discover archery ranges and supplies near you</h2>
-				<h7> Picture taken from: <a href="https://media.istockphoto.com/photos/silhouette-archery-shoots-a-bow-at-the-target-picture-id497894913?k=20&m=497894913&s=170667a&w=0&h=TVTOGKKyaXymuQT2G8Hk8NTfqbFH14eIWOfu_6-NGUI=">iStockPhoto</a> </h7>
-		
 			</div>
 			
 		</div>
         
-		<?php include 'footer.inc' ?>
+		<?php include 'footermain.inc' ?>
     </body>
 </html>
