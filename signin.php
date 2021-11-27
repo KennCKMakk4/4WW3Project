@@ -22,14 +22,25 @@
 
 
     <body>
-		
-		<?php include 'header.inc' ?>
+		<?php 
+			session_start();
+			$session_valid = false;
+			if (isset($_SESSION['valid'])) {
+				if(!empty($_SESSION['valid']) && ($_SESSION['valid']))
+					$session_valid = $_SESSION['valid'];
+			}
+			
+			if ($session_valid) {
+				include 'include/headersession.inc'; 
+			} else
+				include 'include/header.inc'; 
+		?>
 		
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Sign In</h1></div>
 			
 			<!-- start of form for signing in -->
-			<form class="form_signin"  onsubmit="return validate(this)">
+			<form class="form_signin"  onsubmit="return validate(this)" method="post" action="assets/php/action_signin.php"> 
 
 				<!-- username login-->
 				<div class="container-row">
@@ -60,6 +71,6 @@
 			</form>
 		</div>
 		
-        <?php include 'footer.inc' ?>
+        <?php include 'include/footer.inc' ?>
     </body>
 </html>

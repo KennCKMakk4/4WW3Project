@@ -23,14 +23,26 @@
 
 
     <body>
-		<?php include 'header.inc' ?>
+		<?php 
+			session_start();
+			$session_valid = false;
+			if (isset($_SESSION['valid'])) {
+				if(!empty($_SESSION['valid']) && ($_SESSION['valid']))
+					$session_valid = $_SESSION['valid'];
+			}
+			
+			if ($session_valid) {
+				include 'include/headersession.inc'; 
+			} else
+				include 'include/header.inc'; 
+		?>
 		
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Register a New Account</h1></div>
 			
 			<!-- start of form to register -->
 			<!-- same class as submission form-->
-			<form class="form_submission" onsubmit="return validate(this)">
+			<form class="form_submission" onsubmit="return validate(this)" method="post" action="assets/php/action_register.php">
 				
 				<!-- first name, last name, in-line -->
 				<div class="container-row">
@@ -83,23 +95,23 @@
 						<label class="text_bar left-rounded bg-green">Have you done archery before?</label>
 						<div class="container-radio-section">
 							<div class="container-radio-row">
-								<input class="radio-button" type="radio" id="radio1" name="experience">
+								<input class="radio-button" type="radio" id="radio1" name="input_experience" value="0">
 								<label class="radio-label" for="radio1">Never</label><br>
 							</div>
 							<div class="container-radio-row">
-								<input class="radio-button" type="radio" id="radio2" name="experience">
+								<input class="radio-button" type="radio" id="radio2" name="input_experience" value="1">
 								<label class="radio-label" for="radio2">Once or twice</label><br>
 							</div>
 							<div class="container-radio-row">
-								<input class="radio-button" type="radio" id="radio3" name="experience">
+								<input class="radio-button" type="radio" id="radio3" name="input_experience" value="2">
 								<label class="radio-label" for="radio3">Some</label><br>
 							</div>
 							<div class="container-radio-row">
-								<input class="radio-button" type="radio" id="radio4" name="experience">
+								<input class="radio-button" type="radio" id="radio4" name="input_experience" value="3">
 								<label class="radio-label" for="radio4">Trained</label><br>
 							</div>
 							<div class="container-radio-row">
-								<input class="radio-button" type="radio" id="radio5" name="experience">
+								<input class="radio-button" type="radio" id="radio5" name="input_experience" value="4">
 								<label class="radio-label" for="radio5">Experienced</label><br>
 							</div>
 						</div>
@@ -109,11 +121,11 @@
 					<div class="container-row-50">
 						<div class="container-checkbox">
 							<div class="container-checkbox-row">
-								<input class="checkbox-button" type="checkbox" id="cb-notification1" name="input_exp">
+								<input class="checkbox-button" type="checkbox" id="cb-notification1" name="input_noti1" value="1">
 								<label class="checkbox-label" for="cb-notification1">Would you like to receive notifications of neaby centres?</label>
 							</div>
 							<div class="container-checkbox-row">
-								<input class="checkbox-button" type="checkbox" id="cb-notification2" name="input_exp">
+								<input class="checkbox-button" type="checkbox" id="cb-notification2" name="input_noti2" value="1">
 								<label class="checkbox-label" for="cb-notification2">Would you like to receive notifications of updates?</label>
 							</div>
 						</div>
@@ -137,6 +149,6 @@
 			</form>
 		</div>
 		
-        <?php include 'footer.inc' ?>
+        <?php include 'include/footer.inc' ?>
     </body>
 </html>

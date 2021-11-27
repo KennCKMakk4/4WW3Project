@@ -1,14 +1,14 @@
 function validate(form) {
     let fname = form["input_fname"];
     let lname = form["input_lname"];
-    if (fname.value == "") {
-        console.log("No first name");
+    if (fname.value == "" || fname.length > 30) {
+        console.log("No first name or too many characters");
         setInvalid(fname);
         return false;
     }
     setValid(fname);
-    if (lname.value == "") {
-        console.log("No last name");
+    if (lname.value == "" || lname.length > 30) {
+        console.log("No last name or too many characters");
         setInvalid(lname);
         return false;
     }
@@ -18,11 +18,13 @@ function validate(form) {
     let username = form["input_username"];
     let email = form["input_email"];
     if (username.value == "") {
-        console.log("No username");
+        console.log("No username or too many characters");
         setInvalid(username);
         return false;
     }
     setValid(username);
+
+
     if (email.value == "") {
         console.log("No email");
         setInvalid(email);
@@ -37,8 +39,8 @@ function validate(form) {
     
     let pw1 = form["input_password"];
     let pw2 = form["input_password_confirm"];
-    if (pw1.value == "") {
-        console.log("No password");
+    if (pw1.value == "" || pw1.length > 30) {
+        console.log("No password or too many characters");
         setInvalid(pw1);
         return false;
     }

@@ -22,8 +22,19 @@
 
 
     <body>
-		
-		<?php include 'header.inc' ?>
+		<?php 
+			session_start();
+			$session_valid = false;
+			if (isset($_SESSION['valid'])) {
+				if(!empty($_SESSION['valid']) && ($_SESSION['valid']))
+					$session_valid = $_SESSION['valid'];
+			}
+			
+			if ($session_valid) {
+				include 'include/headersession.inc'; 
+			} else
+				include 'include/header.inc'; 
+		?>
 		
 		<div class="main_body">
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
@@ -120,6 +131,6 @@
 			</form>
 		</div>
 		
-        <?php include 'footer.inc' ?>
+        <?php include 'include/footer.inc' ?>
     </body>
 </html>

@@ -21,7 +21,19 @@
 
 
     <body>
-		<?php include 'header.inc' ?>
+		<?php 
+			session_start();
+			$session_valid = false;
+			if (isset($_SESSION['valid'])) {
+				if(!empty($_SESSION['valid']) && ($_SESSION['valid']))
+					$session_valid = $_SESSION['valid'];
+			}
+			
+			if ($session_valid) {
+				include 'include/headersession.inc'; 
+			} else
+				include 'include/header.inc'; 
+		?>
 		
 		<div class="main_body">
 			<div class="main_title">
@@ -31,6 +43,6 @@
 			
 		</div>
         
-		<?php include 'footermain.inc' ?>
+		<?php include 'include/footermain.inc' ?>
     </body>
 </html>

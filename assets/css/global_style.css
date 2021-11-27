@@ -43,6 +43,16 @@ header {
 	padding: 0px 25px;
 }
 
+.header1Session_text {
+
+	margin-top: 8px;
+	margin-bottom: 2px;
+}
+
+.header3Session_text {
+	margin-top: 2px;
+	margin-bottom: 8px;
+}
 
 /* div to hold buttons together */
 .nav_menu {
