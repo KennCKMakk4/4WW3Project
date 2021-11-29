@@ -69,12 +69,13 @@
             echo "made it to database! <br>";
         }
 
+        $hash_pw = hash('sha3-512', $input_password);
         // SELECT (col1, col2) FROM table WHERE ...
         $tblName = "accounts";
         $sql_read = "SELECT * FROM " . $tblName . " " .
                     "WHERE 
                         username='$input_username' " . 
-                    " AND password='$input_password';";
+                    " AND password='$hash_pw';";
 
         echo "<br>qry:" . $sql_read . "<br><br>";
         $result = $conn->query($sql_read);

@@ -138,12 +138,13 @@
 
 
         // INSERT INTO table (col1, col2, ..) VALUES (val1, val2)  - note val1 may not be necessary if you have autoincrement
+        $hash_pw = hash('sha3-512', $input_password);
         $tblName = "accounts";
         $sql_insert = 
                     "INSERT INTO " . $tblName . " " . 
                         "(username, password, fname, lname, email, dob, exp, n1, n2)  " . " " .
                     "VALUES
-                        ('$input_username', '$input_password', '$input_fname', '$input_lname', " .
+                        ('$input_username', '$hash_pw', '$input_fname', '$input_lname', " .
                         "'$input_email', '$input_dob', '$input_experience', '$input_noti1', '$input_noti2');";
         echo "<br>qry:" . $sql_insert . "<br><br>";
 

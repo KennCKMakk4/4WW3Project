@@ -67,3 +67,12 @@ Added buttons to forms `search.php` and `submission.php` where, when pressed, wi
 Using OpenStreetMaps, we inserted a map into the `results.php` and `object.php` pages. In `results.php`, we center the user around a certain location (currently set to McMaster University, Hamilton, Ontario). We also place pins at the addresses of the sample results found.
 
 In `object.php`, we center an interactive map around the sample object that was hard coded in part 1.
+
+
+
+
+# External Resources
+https://serverfault.com/questions/139323/how-to-bind-mysql-server-to-more-than-one-ip-address
+https://www.digitalocean.com/community/tutorials/how-to-allow-remote-access-to-mysql
+https://stackoverflow.com/questions/1559955/host-xxx-xx-xxx-xxx-is-not-allowed-to-connect-to-this-mysql-server
+Help with allowing access to database, when host is not allowed to connect.
