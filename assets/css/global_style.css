@@ -25,6 +25,13 @@ p {
 	margin: 4px 0px;
 }
 
+/* error message on signin/signout, etc */
+p.error_message {
+	border-radius: 5px;
+	padding: 4px;
+	background-color: #ffcccc;
+	color: red;
+}
 
 /* defining header for all pages */
 header {
@@ -205,3 +212,5 @@ change this in another style sheet if we need a sidebar to the right for a speci
 		margin: 0px 0px 5px 0px;
 	}
 }
+
+

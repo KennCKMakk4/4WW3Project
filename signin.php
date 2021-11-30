@@ -54,7 +54,17 @@
 					<input class="input_box right-rounded" type="password" name="input_password" required placeholder="Enter your password">
 				</div>
 
-
+				<?php 
+					if (isset($_SESSION['status_message']))
+						if (!empty($_SESSION['status_message'])) {
+							echo "<div class='container-row'>
+									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
+									</div>";
+							// reset message so when you change screens and come back, msg doesn't appear again
+							$_SESSION['status_message'] = "";
+						}
+					
+				?>
 
 				<!-- submit button -->
 				<div class="container-row">

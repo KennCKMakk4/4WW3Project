@@ -116,7 +116,6 @@
     }
 
     // ON ERROR...
-    $_SESSION['status_message'] = "No Post Method";
     errorReceived();
     exit();
 ?>

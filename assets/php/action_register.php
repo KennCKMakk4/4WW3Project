@@ -116,7 +116,7 @@
         // default values...
         $input_experience = 0;
         $input_noti1 = 0;
-        $input_not2 = 0;
+        $input_noti2 = 0;
         // Appending optional fields into the sql query
         if (array_key_exists('input_experience', $_POST)) {
             if (isValidEntry($_POST['input_experience'])) {
@@ -154,7 +154,7 @@
             // TODO: GIVE TOKEN HERE
             echo "New record created successfully. Going to main... <br>";
             $_SESSION['status_message'] = "";
-            header("Location: ../../main.php");
+            // header("Location: ../../main.php");
             return;
         } else {
             // Could not input; either existing email or username
