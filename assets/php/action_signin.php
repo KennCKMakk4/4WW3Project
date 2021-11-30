@@ -42,10 +42,12 @@
         echo "password=" . $input_password . "<br>";
 
 
-        // $serverName = "kennsite.live"
-        $serverName = "localhost:3306";
-        $username = "root";
-        $password = "";
+        $serverName = "18.189.211.159:3306";
+        $username = "guest";
+        $password = "KCKMakk_4";
+        // $serverName = "localhost:3306";
+        // $username = "root";
+        // $password = "";
 
         // connection to server
         $conn = new mysqli($serverName, $username, $password); 

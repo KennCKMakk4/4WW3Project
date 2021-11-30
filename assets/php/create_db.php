@@ -3,11 +3,9 @@
     echo "Method: " . $_SERVER["REQUEST_METHOD"] . "<br>";
     if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
-        // $serverName = "https://kennsite.live/";
         $serverName = "18.189.211.159:3306";
         $username = "guest";
         $password = "KCKMakk_4";
-
         echo "Connecting to " . $serverName . "<br>";
         // $serverName = "localhost:3306";
         // $username = "root";
@@ -27,7 +25,7 @@
         $dbName = "rangerswatch";
         echo "Creating DB<br>";
         // ====Creating a database====
-        $sql = "CREATE DATABASE " . $dbName;
+        $sql = "CREATE DATABASE IF NOT EXISTS " . $dbName;
         // if ($conn->query($sql) === TRUE)
         //     echo "Database created <br>";
         // else   
