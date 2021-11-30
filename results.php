@@ -45,6 +45,7 @@
 				include 'include/headersession.inc'; 
 			} else
 				include 'include/header.inc'; 
+			
 		?>
 		
 		<div class="main_body">

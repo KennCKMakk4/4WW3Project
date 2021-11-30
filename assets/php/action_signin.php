@@ -7,11 +7,12 @@
 
     // moves back to original screen
     function errorReceived($msg) {
-        echo "<br>Received error: " . $msg . ". Returning to registration<br>";
+        echo "<br>Received error: " . $msg . ". Returning to signin<br>";
+        $_SESSION['username'] = "";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
         $_SESSION['status_message'] = $msg;
-        header("Location: ../../registration.php");
+        header("Location: ../../signin.php");
     }
 
     // start storing values of user
@@ -82,6 +83,7 @@
 
                 // TODO: GIVE TOKEN HERE
                 echo $row['fname'] . " " . $row['lname'] . "<br>";
+                $_SESSION['username'] = $row['username'];
                 $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
                 $_SESSION['valid'] = true;
                 $_SESSION['status_message'] = "";

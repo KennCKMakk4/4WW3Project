@@ -241,7 +241,3 @@ input.checkbox-button {
 label.checkbox-label {
 	margin-top:10px;
 }
-/* have custom button design for uploading *?
-input[type="file"] {
-	display: none;
-}

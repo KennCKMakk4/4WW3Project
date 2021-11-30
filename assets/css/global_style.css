@@ -28,6 +28,7 @@ p {
 /* error message on signin/signout, etc */
 p.error_message {
 	border-radius: 5px;
+	border: 1px red solid;
 	padding: 4px;
 	background-color: #ffcccc;
 	color: red;

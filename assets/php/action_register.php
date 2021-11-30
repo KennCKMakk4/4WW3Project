@@ -8,6 +8,7 @@
     // moves back to original screen
     function errorReceived($msg) {
         echo "<br>Received error: " . $msg . ". Returning to registration<br>";
+        $_SESSION['username'] = "";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
         $_SESSION['status_message'] = $msg;
@@ -153,6 +154,7 @@
 
                     // Giving session tokens here
                     echo $row['fname'] . " " . $row['lname'] . "<br>";
+                    $_SESSION['username'] = $row['username'];
                     $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
                     $_SESSION['valid'] = true;
                     $_SESSION['status_message'] = "";

@@ -46,7 +46,7 @@
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
 			
 			<!-- start of form - no action yet -->
-			<form name="submissionForm" class="form_submission"> <!-- onsubmit="return validate(this)" Disabled for HTML5 Form Validation instead -->
+			<form name="submissionForm" class="form_submission" method="post" action="assets/php/action_submit.php"> <!-- onsubmit="return validate(this)" Disabled for HTML5 Form Validation instead -->
 
 				<!-- using container-row to have all elements in div to be in-line-->
 				<!-- each row has a label and an input; label is class text_bar, inputs are class input_box-->
@@ -88,15 +88,6 @@
 						<p class="form_button_text">Use My Location</p>
 					</div>
 				</div>
-				<div class="container-row">
-					<label class="text_bar left-rounded bg-green">Longitude*</label>
-					<input class="input_box right-rounded" 
-						type="text" 
-						name="input_longitude" 
-						required 
-						pattern="^(\+|-)?(?:180(?:(?:\.0{1,9})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,9})?))$"
-						placeholder="longitude">
-				</div>
 				
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Latitude*</label>
@@ -107,20 +98,38 @@
 						pattern="^(\+|-)?(?:90(?:(?:\.0{1,9})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]{1,9})?))$"
 						placeholder="latitude">
 				</div>
+				<div class="container-row">
+					<label class="text_bar left-rounded bg-green">Longitude*</label>
+					<input class="input_box right-rounded" 
+						type="text" 
+						name="input_longitude" 
+						required 
+						pattern="^(\+|-)?(?:180(?:(?:\.0{1,9})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]{1,9})?))$"
+						placeholder="longitude">
+				</div>
 				<!-- image uploading -->
-				<!--
 				<div class="container-row-file">
-					<label class="text_bar">Image</label>
+					<label class="text_bar ">Image*</label>
 					<label class="file_upload"><input class="file_upload" type="file" accept="image/*" name="input_image" required>Upload Image</label> 
 				</div>
--->
+
 				<!-- video uploading -->
-				<!--
-				<div class="container-row-file">
+				<!-- <div class="container-row-file">
 					<label class="text_bar">Video</label>
 					<label class="file_upload"><input class="file_upload" type="file" accept="video/*" name="input_video">Upload Video</label> 
-				</div>
-			-->
+				</div> -->
+			
+				<!-- rendering error message to screen -->
+				<?php 
+					if (isset($_SESSION['status_message']))
+						if (!empty($_SESSION['status_message'])) {
+							echo "<div class='container-row'>
+									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
+									</div>";
+							// reset message so when you change screens and come back, msg doesn't appear again
+							$_SESSION['status_message'] = "";
+						}
+				?>
 
 				<!-- submit button -->
 				<div class="container-row">
