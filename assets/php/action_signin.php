@@ -1,15 +1,17 @@
 <?php
 
+    // checks if form sent valid data
     function isValidEntry($input) {
         return (isset($input) && !empty($input));
     }
 
     // moves back to original screen
-    function errorReceived() {
-        echo "<br> Received error here, going back to signin <br>";
+    function errorReceived($msg) {
+        echo "<br>Received error: " . $msg . ". Returning to registration<br>";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
-        header("Location: ../../signin.php");
+        $_SESSION['status_message'] = $msg;
+        header("Location: ../../registration.php");
     }
 
     // start storing values of user
@@ -26,21 +28,13 @@
         if (isValidEntry($_POST['input_username'])) {
             $input_username = $_POST['input_username'];
         } else {
-            echo "no username <br>";
-            $_SESSION['status_message'] = "Empty username received";
-            errorReceived();
+            errorReceived("Empty username received");
         }
         if (isValidEntry($_POST['input_password'])) {
             $input_password = $_POST['input_password'];
         } else {
-            echo "no pw <br>";
-            $_SESSION['status_message'] = "Empty password received";
-            errorReceived();
+            errorReceived("Empty password received");
         }
-
-        echo "Username=" . $input_username . "<br>";
-        echo "password=" . $input_password . "<br>";
-
 
         $serverName = "18.189.211.159:3306";
         $username = "guest";
@@ -52,8 +46,7 @@
         // connection to server
         $conn = new mysqli($serverName, $username, $password); 
         if ($conn->connect_error) {
-            $_SESSION['valid'] = false;
-            $_SESSION['status_message'] = "Failed to connect to server";
+            errorReceived("Failed to connect to server");
             die("Connection failed: " . $conn->connect_error);
         } else {
             echo "made it to server <br>";
@@ -64,8 +57,7 @@
         // connection to database
         $conn = new mysqli($serverName, $username, $password, $dbName); 
         if ($conn->connect_error) {
-            $_SESSION['valid'] = false;
-            $_SESSION['status_message'] = "Failed to connect to database";
+            errorReceived("Failed to connect to database");
             die("Connection failed: " . $conn->connect_error);
         } else {
             echo "made it to database! <br>";
@@ -103,19 +95,14 @@
             } else {
                 // No such row in table matching parameters; i.e. incorrect login info
                 echo "Could not find matching parameters: " . $sql_read . "<br>";
-                $_SESSION['status_message'] = "Invalid username or password";
-                errorReceived();
+                errorReceived("Invalid username or password");
             }
         } else {
             // Error finding result
             echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            $_SESSION['status_message'] = "Could not query database";
-            errorReceived();
+            errorReceived("Could not query database");
         }
         $conn->close();
     }
-
-    // ON ERROR...
-    errorReceived();
     exit();
 ?>

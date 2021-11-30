@@ -31,9 +31,9 @@
 					$session_valid = $_SESSION['valid'];
 			}
 			
-			if ($session_valid) {
+			if ($session_valid)
 				include 'include/headersession.inc'; 
-			} else
+			else
 				include 'include/header.inc'; 
 		?>
 		
@@ -133,6 +133,18 @@
 					</div>
 				</div>
 
+				<!-- rendering error message to screen -->
+				<?php 
+					if (isset($_SESSION['status_message'])){
+						if (!empty($_SESSION['status_message'])) {
+							echo "<div class='container-row'>
+									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
+									</div>";
+							// reset message so when you change screens and come back, msg doesn't appear again
+							$_SESSION['status_message'] = "";
+						}
+					}
+				?>
 
 				<!-- submit button -->
 				<div class="container-row">

@@ -2,21 +2,19 @@
 
     // checks if form sent valid data
     function isValidEntry($input) {
-        // separated to isolate error
-        if (isset($input))
-            return (!empty($input));
-        else
-            return false;
+        return (isset($input) && !empty($input));
     }
 
     // moves back to original screen
-    function errorReceived() {
-        echo "<br> Received error here, going back to registration <br>";
+    function errorReceived($msg) {
+        echo "<br>Received error: " . $msg . ". Returning to registration<br>";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
+        $_SESSION['status_message'] = $msg;
         header("Location: ../../registration.php");
     }
 
+    session_start();
     echo "in php, comparing request <br>";
     echo "Method: " . $_SERVER["REQUEST_METHOD"] . "<br>";
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -28,49 +26,37 @@
         if (isValidEntry($_POST['input_fname'])) {
             $input_fname = $_POST['input_fname'];
         } else {
-            echo "no fname <br>";
-            $_SESSION['status_message'] = "Empty fname received";
-            errorReceived();
+            errorReceived("Empty first name received");
         }
 
         if (isValidEntry($_POST['input_lname'])) {
             $input_lname = $_POST['input_lname'];
         } else {
-            echo "no lname <br>";
-            $_SESSION['status_message'] = "Empty lname received";
-            errorReceived();
+            errorReceived("Empty last name received");
         }
 
         if (isValidEntry($_POST['input_username'])) {
             $input_username = $_POST['input_username'];
         } else {
-            echo "no username <br>";
-            $_SESSION['status_message'] = "Empty username received";
-            errorReceived();
+            errorReceived("Empty username received");
         }
         
         if (isValidEntry($_POST['input_email'])) {
             $input_email = $_POST['input_email'];
         } else {
-            echo "no email <br>";
-            $_SESSION['status_message'] = "Empty email received";
-            errorReceived();
+            errorReceived("Empty email received");
         }
 
         if (isValidEntry($_POST['input_password'])) {
             $input_password = $_POST['input_password'];
         } else {
-            echo "no pw <br>";
-            $_SESSION['status_message'] = "Empty password received";
-            errorReceived();
+            errorReceived("Empty password received");
         }
 
         if (isValidEntry($_POST['input_dob'])) {
             $input_dob = $_POST['input_dob'];
         } else {
-            echo "no dob <br>";
-            $_SESSION['status_message'] = "Empty DOB received";
-            errorReceived();
+            errorReceived("Empty DOB received");
         }
 
         echo "input_fname=" . $input_fname . "<br>";
@@ -92,8 +78,7 @@
         // connection to server
         $conn = new mysqli($serverName, $username, $password); 
         if ($conn->connect_error) {
-            $_SESSION['valid'] = false;
-            $_SESSION['status_message'] = "Failed to connect to server";
+            errorReceived("Failed to connect to server");
             die("Connection failed: " . $conn->connect_error);
         } else {
             echo "made it to server <br>";
@@ -104,8 +89,7 @@
         // connection to database
         $conn = new mysqli($serverName, $username, $password, $dbName); 
         if ($conn->connect_error) {
-            $_SESSION['valid'] = false;
-            $_SESSION['status_message'] = "Failed to connect to database";
+            errorReceived("Failed to connect to database");
             die("Connection failed: " . $conn->connect_error);
         } else {
             echo "made it to database! <br>";
@@ -151,20 +135,53 @@
 
         // =========INSERTING INTO ============
         if ($conn->query($sql_insert) === TRUE) {
-            // TODO: GIVE TOKEN HERE
-            echo "New record created successfully. Going to main... <br>";
-            $_SESSION['status_message'] = "";
-            // header("Location: ../../main.php");
-            return;
+            // Succesful insert
+
+
+            // now pull from the db the account details with given parameters
+            $sql_read = "SELECT * FROM " . $tblName . " " .
+                        "WHERE 
+                            username='$input_username' " . 
+                        " AND password='$hash_pw';";
+            $result = $conn->query($sql_read);
+            if ($result) {
+                if ($result->num_rows > 0) {
+                    // Successful pull of new account details
+                    echo "Found username entry<br>";
+                    // get first row
+                    $row = $result->fetch_assoc();
+
+                    // Giving session tokens here
+                    echo $row['fname'] . " " . $row['lname'] . "<br>";
+                    $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
+                    $_SESSION['valid'] = true;
+                    $_SESSION['status_message'] = "";
+                    
+                    // 86400seconds = 1 day
+                    // cookies for if user set 'RememberMe' at login
+                    setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
+                    // set destination and leave this file
+
+                    echo "New record created successfully. Going to main... <br>";
+                    header("Location: ../../main.php");
+                    return;
+                } else {
+                    errorReceived("Account created, but failed authentication to login");
+                }
+            } else {
+                errorReceived("Account created, but failed authentication query");
+            }
         } else {
             // Could not input; either existing email or username
             echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            $_SESSION['status_message'] = "Already Existing Username or Email";
+            $duplicateErrorStr = "";
+            if (strpos($conn->error, "accounts.username"))
+                $duplicateErrorStr = "username";
+            else if (strpos($conn->error, "accounts.email"))
+                $duplicateErrorStr = "email";
+            errorReceived("There is already an existing account with the same " . $duplicateErrorStr);
         }
         $conn->close();
     }
-
-    // ON ERROR...
-    errorReceived();
     exit();
 ?>

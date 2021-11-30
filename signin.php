@@ -30,9 +30,9 @@
 					$session_valid = $_SESSION['valid'];
 			}
 			
-			if ($session_valid) {
+			if ($session_valid)
 				include 'include/headersession.inc'; 
-			} else
+			else
 				include 'include/header.inc'; 
 		?>
 		
@@ -54,6 +54,7 @@
 					<input class="input_box right-rounded" type="password" name="input_password" required placeholder="Enter your password">
 				</div>
 
+				<!-- rendering error message to screen -->
 				<?php 
 					if (isset($_SESSION['status_message']))
 						if (!empty($_SESSION['status_message'])) {
@@ -63,7 +64,6 @@
 							// reset message so when you change screens and come back, msg doesn't appear again
 							$_SESSION['status_message'] = "";
 						}
-					
 				?>
 
 				<!-- submit button -->
