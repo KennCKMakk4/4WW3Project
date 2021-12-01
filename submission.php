@@ -35,7 +35,7 @@
 			else {
 				include 'include/header.inc'; 
 
-				$_SESSION['status_message'] = "Please log in to submit objects";
+				$_SESSION['status_message'] = "Please log in to submit a location";
 				header("Location: signin.php");
 			}
 			// We don't want people to be able to submit w/o logging in - we also want to track who submitted a place

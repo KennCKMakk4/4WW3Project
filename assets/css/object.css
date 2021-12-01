@@ -17,11 +17,11 @@
 
 /* star image */
 .ratings_star {
+	display: flex;
 	margin-top: 4px;
 	margin-left: 10px;
 	padding: 0px;
 }
-
 
 /* special formats for h# when used with ratings */
 h3.rating {
@@ -74,7 +74,6 @@ video.obj_video {
 	height: 100%;
 	width: 100%;
 }
-
 
 /* when screen starts displaying elements vertically instead of horizontally, make the video expand */
 @media only screen and (max-width: 767px) {

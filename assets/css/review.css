@@ -1,0 +1,46 @@
+
+
+.ratings_star_obj {
+	font-size: 50px;
+	cursor: pointer;
+}
+
+/* star image */
+.ratings_star {
+	display: flex;
+	margin-top: 4px;
+	margin-left: 10px;
+	padding: 0px;
+	cursor: pointer;
+}
+
+.margin_bot_25 {
+	margin-bottom: 25px;
+}
+
+
+h2 {
+	text-align: center;
+}
+
+h2.lessMargin {
+	margin-bottom: 0px;
+}
+.container-row-star {
+	display: flex;
+}
+/* when screen starts displaying elements vertically instead of horizontally, make the video expand */
+@media only screen and (max-width: 767px) {
+	.container-row-star {
+		display: flex;
+	}
+	/* separate name and star images */
+	.ratings_bar {
+		
+	}
+
+	/* but keep stars inline */
+	.ratings_star {
+		
+	}
+}
