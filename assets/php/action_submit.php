@@ -123,17 +123,6 @@
         $serverName = "18.189.211.159:3306";
         $username = "guest";
         $password = "KCKMakk_4";
-
-        // connection to server
-        $conn = new mysqli($serverName, $username, $password); 
-        if ($conn->connect_error) {
-            errorReceived("Failed to connect to server");
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            echo "made it to server <br>";
-        }
-        $conn->close();
-
         $dbName = "rangerswatch";
         // connection to database
         $conn = new mysqli($serverName, $username, $password, $dbName); 

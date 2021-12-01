@@ -5,26 +5,7 @@ function initialize() {
     // use the OpenStreetMaps tiles
     initializeMap();
 
-
-    // sets location/center of map
-    mymap.setView([43.263,-79.919], 10);
-    addMarkerNL( 43.263,-79.919, "Your location");
-
-    // Hamilton Archery Centre
-    addMarker( 43.240260, -79.789990,
-        "Hamilton Archery Centre", "object.html");
-        
-    // Evolve Archery Canada
-    addMarker( 43.495470, -79.886850,
-        "Evolve Archery Canada", "object.html");
-        
-    // Silver Sword Armories
-    addMarker( 43.497740, -79.742210,
-        "Silver Sword Armories", "object.html");
-        
-    // Badenoch Archery
-    addMarker( 43.449300, -80.116240,
-        "Badenoch Archery", "object.html");
+    findMarkers();
 
         // create a blank pop-up for later use
     // display a popup when the user clicks on the map
@@ -43,6 +24,51 @@ function initializeMap() {
         'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
         { attribution: 'Map data &copy; <a href="http://openstreetmap.org"> OpenStreetMap</a> contributors, ' + '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>' }
         ).addTo(mymap);
+}
+
+function findMarkers() {
+    // find data from php and render them
+
+    // first - create a marker around our search location
+    var latlongtoken = document.getElementById("latlongtoken");
+    if (latlongtoken != null) {
+        console.log("got data");
+        console.log(latlongtoken.value);
+        let lat = latlongtoken.value.split(", ")[0];
+        let long = latlongtoken.value.split(", ")[1];
+        mymap.setView([lat,long], 10);
+        addMarkerNL( lat,long, "Your Search Location");
+    } else {
+        console.log("No lat long data");
+        latlongtoken = 0;
+    }
+
+    // sets location/center of map
+    var locationtoken = document.getElementById("locationtoken");
+    if (locationtoken != null) {
+        console.log("Got location data");
+        console.log(locationtoken.value);
+
+        // each section of data[4] is info to create a marker
+        // lat, long, name, id
+        // id used to allow markers to link to the object.html
+        var data = locationtoken.value.split(", ");
+        console.log(data.length)
+        for (var i = 0; i < data.length; i+=4) {
+            var lat = parseFloat(data[i]);
+            var long = parseFloat(data[i+1]);
+            addMarker(parseFloat(data[i]), parseFloat(data[i+1]), data[i+2], "object.php?id="+data[i+3]);
+
+            // setting marker on first result if we are not already marked
+            if (latlongtoken == 0) {
+                latlongtoken = 1;
+                mymap.setView([lat,long], 10);
+            }
+        }
+    } else {
+        console.log("No location data");
+        locationtoken = 0;
+    }
 }
 
 // creates a marker with the latitude, longitude, location name, and the link to the location

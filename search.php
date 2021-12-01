@@ -42,7 +42,7 @@
 			<div class="title"><h1 id="objTitle">Search</h1></div>
 			
 			<!-- creating form - no action yet -->
-			<form class="form_search" name="searchForm" onsubmit="return validate(this)">
+			<form class="form_search" name="searchForm" onsubmit="return validate(this)" method="get" action="results.php">
 
 				<!-- search bar - by name-->
 				<div class="container-row">
@@ -66,15 +66,26 @@
 				<div class="container-row">
 					<label class="text_bar_long left-rounded bg-green">With Minimum Rating:</label>
 					<select class="input_box right-rounded" name="minrating">
-						<option value="minRate5">5</option>
-						<option value="minRate4">4</option>
-						<option value="minRate3">3</option>
-						<option value="minRate2">2</option>
-						<option value="minRate1">1</option>
+						<option value="0"> </option>
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
 					</select>
 				</div>
 
 
+				<?php 
+					if (isset($_SESSION['status_message']))
+						if (!empty($_SESSION['status_message'])) {
+							echo "<div class='container-row'>
+									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
+									</div>";
+							// reset message so when you change screens and come back, msg doesn't appear again
+							$_SESSION['status_message'] = "";
+						}
+				?>
 
 				<!-- submit button -->
 				<div class="container-row">
