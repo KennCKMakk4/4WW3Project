@@ -8,6 +8,7 @@
     // moves back to original screen
     function errorReceived($msg) {
         echo "<br>Received error: " . $msg . ". Returning to signin<br>";
+        $conn=null;
         $_SESSION['username'] = "";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
@@ -37,60 +38,57 @@
             errorReceived("Empty password received");
         }
 
-        $serverName = "18.189.211.159:3306";
-        $username = "guest";
-        $password = "KCKMakk_4";
-        $dbName = "rangerswatch";
-        // connection to database
-        $conn = new mysqli($serverName, $username, $password, $dbName); 
-        if ($conn->connect_error) {
-            errorReceived("Failed to connect to database");
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            echo "made it to database! <br>";
-        }
-
         $hash_pw = hash('sha3-512', $input_password);
-        // SELECT (col1, col2) FROM table WHERE ...
-        $tblName = "accounts";
-        $sql_read = "SELECT * FROM " . $tblName . " " .
-                    "WHERE 
-                        username='$input_username' " . 
-                    " AND password='$hash_pw';";
 
-        echo "<br>qry:" . $sql_read . "<br><br>";
-        $result = $conn->query($sql_read);
-        if ($result) {
-            if ($result->num_rows > 0) {
-                // SUCCESFUL LOGIN!!!
-                echo "Found username entry<br>";
-                // get first row
-                $row = $result->fetch_assoc();
+        // connection to DB
+        try {
+            $serverName = "18.189.211.159:3306";
+            $username = "guest";
+            $password = "KCKMakk_4";
+            $dbName = "rangerswatch";
+            $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+            echo "made it to database! <br>";
 
-                // TODO: GIVE TOKEN HERE
-                echo $row['fname'] . " " . $row['lname'] . "<br>";
-                $_SESSION['username'] = $row['username'];
-                $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
-                $_SESSION['valid'] = true;
-                $_SESSION['status_message'] = "";
-                
-                // 86400seconds = 1 day
-                // cookies for if user set 'RememberMe' at login
-                setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
-                // set destination and leave this file
-                header("Location: ../../main.php");
-                return;
-            } else {
-                // No such row in table matching parameters; i.e. incorrect login info
-                echo "Could not find matching parameters: " . $sql_read . "<br>";
-                errorReceived("Invalid username or password");
+            $tblName = "accounts";
+            $sql_read = "SELECT * FROM " . $tblName . " " .
+                        " WHERE username=:input_username " . 
+                        " AND password=:hash_pw;";
+            echo "<br>qry:" . $sql_read . "<br><br>";
+            $result = $conn->prepare($sql_read);
+            $result->bindValue(':input_username', $input_username);
+            $result->bindValue(':hash_pw', $hash_pw);
+            $result->execute();
+            if ($result) {
+                if ($result->rowCount() > 0) {
+                    // SUCCESFUL LOGIN!!!
+                    echo "Found username entry<br>";
+                    // get first row
+                    $row = $result->fetch();
+
+                    echo $row['fname'] . " " . $row['lname'] . "<br>";
+                    $_SESSION['username'] = $row['username'];
+                    $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
+                    $_SESSION['valid'] = true;
+                    $_SESSION['status_message'] = "";
+                    
+                    // 86400seconds = 1 day
+                    // cookies for if user set 'RememberMe' at login
+                    setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
+                    // set destination and leave this file
+                    header("Location: ../../main.php");
+                    return;
+                } else {
+                    // No such row in table matching parameters; i.e. incorrect login info
+                    echo "Could not find matching parameters: " . $sql_read . "<br>";
+                    errorReceived("Invalid username or password");
+                }
             }
-        } else {
-            // Error finding result
-            echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            errorReceived("Could not query database");
+            $conn=null;
+        } catch (PDOException $e) {
+            $error = $e->errorInfo[2];
+            errorReceived($error);
         }
-        $conn->close();
+
     }
     exit();
 ?>

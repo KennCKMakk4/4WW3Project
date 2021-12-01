@@ -35,9 +35,8 @@
 			if ($session_valid)
 				include 'include/headersession.inc'; 
 			else {
-				include 'include/header.inc'; 
-
 				$_SESSION['status_message'] = "Please log in to review locations";
+				include 'include/header.inc'; 
 				header("Location: signin.php");
 			}
 
@@ -57,10 +56,7 @@
 				// building query string from search_name and search_loc
 				if (isValidEntry($_GET['id'])) {
 					$location_id = $_GET['id'];
-					$sqlFilters = " WHERE (`id`='" . $location_id . "')";
-					// $sqlFilters = " WHERE (`name` LIKE '%" . $input_name . "%')";
 				} else {
-					// you must have an id in order to request an object to render
 					errorReceived("No Object ID in Request");
 				}
 
@@ -69,31 +65,27 @@
 				$username = "guest";
 				$password = "KCKMakk_4";
 				$dbName = "rangerswatch";
-				$conn = new mysqli($serverName, $username, $password, $dbName); 
-				if ($conn->connect_error) {
-					errorReceived("Failed to connect to database");
-					die("Connection failed: " . $conn->connect_error);
-				}
+				try {
+					$conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+					$tblName = "locations";
+					$sql_read = "SELECT `name` FROM " . $tblName . " WHERE `id`=?;";
+					$result = $conn->prepare($sql_read);
+					$result->bindValue(1, $location_id);
+					$result->execute();
 
-				
-				$tblName = "locations";
-				$sql_read = "SELECT `name` FROM " . $tblName . $sqlFilters . ";";
-				$result = $conn->query($sql_read);
-
-				$location_name = "";
-
-				if ($result) {
-					if ($result->num_rows > 0) {
-						$row = $result->fetch_assoc();
+					$location_name = "";
+					if ($result->rowCount() > 0) {
+						$row = $result->fetch();
 						$location_name = $row["name"];
+						$_SESSION['status_message'] = "";
 					} else {
 						errorReceived("No results obtained with object ID " . $location_id);
 					}
-				} else {
-					errorReceived("Query failed: " . $conn->error);
+				} catch (PDOException $e) {
+					$error = $e->errorInfo[2];
+					errorReceived($error);
 				}
 			}
-
 		?>
 		
 		<div class="main_body">
@@ -150,8 +142,6 @@
 							echo "<div class='container-row'>
 									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
 									</div>";
-							// reset message so when you change screens and come back, msg doesn't appear again
-							$_SESSION['status_message'] = "";
 						}
 					}
 				?>

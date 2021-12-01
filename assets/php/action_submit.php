@@ -72,60 +72,33 @@
         echo "input_image=" . $input_image . "<br>";
         echo "input_image_dir=" . $input_image_dir . "<br>";
 
-
         // handling non-required values if there is something present
-        $sqlColExtra = "";
-        $sqlValExtra = "";
-
+        $input_phone = "";
         if (isValidEntry($_POST['input_phone'])) {
             $input_phone = $_POST['input_phone'];
-            $sqlColExtra = $sqlColExtra . ", phone";
-            $sqlValExtra = $sqlValExtra . ", '" . $input_phone . "'";
         }
 
+        $input_email = "";
         if (isValidEntry($_POST['input_email'])) {
             $input_email = $_POST['input_email'];
-            $sqlColExtra = $sqlColExtra . ", email";
-            $sqlValExtra = $sqlValExtra . ", '" . $input_email . "'";
         }
 
+        $input_address = "";
         if (isValidEntry($_POST['input_address'])) {
             $input_address = $_POST['input_address'];
-            $sqlColExtra = $sqlColExtra . ", address";
-            $sqlValExtra = $sqlValExtra . ", '" . $input_address . "'";
         }
 
+        $input_video = "";
         if (isValidEntry($_FILES['input_video']['name'])) {
             $extension = "." . strtolower(pathinfo($_FILES['input_video']['name'], PATHINFO_EXTENSION));
             // new name for file
             $input_video = "vid_" . str_replace(' ', '', strtolower($input_name)) . $extension;
             $input_video_dir = $_FILES['input_video']['tmp_name'];
-            $sqlColExtra = $sqlColExtra . ", video";
-            $sqlValExtra = $sqlValExtra . ", '" . $input_video . "'";
         }
-        
-
-        echo "Extra fields: <br>";
-        echo $sqlColExtra . "<br>" . $sqlValExtra . "<br>";
-
-        // connecting to db
-        $serverName = "18.189.211.159:3306";
-        $username = "guest";
-        $password = "KCKMakk_4";
-        $dbName = "rangerswatch";
-        // connection to database
-        $conn = new mysqli($serverName, $username, $password, $dbName); 
-        if ($conn->connect_error) {
-            errorReceived("Failed to connect to database");
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            echo "made it to database! <br>";
-        }
-
 
         // UPLOADING FILES
         $target_dir = "../../uploaded/img/";              // name of destination
-        $target_file = $target_dir . $input_image; // name of destination + file
+        $target_file = $target_dir . $input_image;        // name of destination + file
         if (move_uploaded_file($input_image_dir, $target_file)) {
             echo "Successful creation of img @ " . $target_file . "<br>";
 
@@ -135,43 +108,58 @@
                 if (move_uploaded_file($input_video_dir, $target_file)) {
                     echo "Successful creation of video @ " . $target_file . "<br>";
                 } else {
-                    errorReceived("Failed to upload image during submission");
+                    $_SESSION['status_message'] = "Failed to upload image during submission";
                 }
             }
-
             echo "Files uploaded - inserting into DB<br>";
-            $tblName = "locations";
-            $sql_insert = "INSERT INTO " . $tblName . " " . 
-                            "(name, about, latitude, longitude, username, image" . $sqlColExtra . ") " .
-                        "VALUES
-                            ('$input_name', '$input_about', '$input_latitude', '$input_longitude', '$input_username', " .
-                            "'$input_image'" . $sqlValExtra . ");";
-            echo "<br>qry:" . $sql_insert . "<br><br>";
+        // connecting to db to insert record
+            try {
+                // connecting to db
+                $serverName = "18.189.211.159:3306";
+                $username = "guest";
+                $password = "KCKMakk_4";
+                $dbName = "rangerswatch";
+                // connection to database
+                $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password);         
+                echo "made it to database! <br>";
 
-            // =========INSERTING INTO ============
-            if ($conn->query($sql_insert) === TRUE) {
-                // Succesful insert
-                echo "New record created successfully. Going to the new object!... <br>";
-
-                // TODO: Point user to new object
-                header("Location: ../../object.php");
-                return;
-
-               
-            } else {
-                // Could not input; error executing query
-                echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-                $duplicateErrorStr = "";
-                if (strpos($conn->error, "locations.name")) {
-                    $duplicateErrorStr = "name";
-                    errorReceived("There is already an existing place with the same " . $duplicateErrorStr);
-                } else {
-                    errorReceived($conn->error);
+                $tblName = "locations";
+                $sql_insert = "INSERT INTO " . $tblName . " " . 
+                                "(name, about, latitude, longitude, username, image, video, phone, email, address) " .
+                            "VALUES
+                                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                echo "<br>qry:" . $sql_insert . "<br><br>";
+                $vals = array($input_name, $input_about, $input_latitude, $input_longitude, $input_username, $input_image, 
+                            $input_video, $input_phone, $input_email, $input_address);
+                // =========INSERTING INTO ============
+                $stmt = $conn->prepare($sql_insert);
+                if ($stmt->execute($vals)) {
+                    // Succesful insert
+                    echo "New record created successfully. Going to the new object!... <br>";
+                    $sql_getnew = "SELECT * FROM " . $tblName . " WHERE (`name` LIKE ?)";
+                    $stmt2 = $conn->prepare($sql_getnew);
+                    $stmt2->bindValue(1, "%{$input_name}");
+                    $id = 0;
+                    if ($stmt2->execute()) {
+                        if ($stmt2->rowCount() > 0) {
+                            $result = $stmt2->fetch();
+                            $id = $result['id'];
+                        }
+                    }
+                    header("Location: ../../object.php?id=" . $id);
+                    return;
                 }
-            }
 
-            // Finished uploading files and submitting...
-            $conn->close();
+                // Finished uploading files and submitting...
+                $conn = null;
+            }  catch (PDOException $e) {
+                $error = $e->errorInfo[2];
+                // changing error msg based on type
+                if (strpos($error, "locations.name"))
+                    $error = "There is already an existing place with the same name";
+    
+                errorReceived($error);
+            }
 
         } else {
             // File upload failed

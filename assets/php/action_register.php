@@ -8,6 +8,7 @@
     // moves back to original screen
     function errorReceived($msg) {
         echo "<br>Received error: " . $msg . ". Returning to registration<br>";
+        $conn = null;
         $_SESSION['username'] = "";
         $_SESSION['fullname'] = "";
         $_SESSION['valid'] = false;
@@ -69,20 +70,6 @@
 
         // these parts are optional from the form; we check if key exists, then validate that
 
-        $serverName = "18.189.211.159:3306";
-        $username = "guest";
-        $password = "KCKMakk_4";
-        $dbName = "rangerswatch";
-        // connection to database
-        $conn = new mysqli($serverName, $username, $password, $dbName); 
-        if ($conn->connect_error) {
-            errorReceived("Failed to connect to database");
-            die("Connection failed: " . $conn->connect_error);
-        } else {
-            echo "made it to database! <br>";
-        }
-
-        $tblName = "accounts";
 
         // default values...
         $input_experience = 0;
@@ -111,65 +98,73 @@
 
         // INSERT INTO table (col1, col2, ..) VALUES (val1, val2)  - note val1 may not be necessary if you have autoincrement
         $hash_pw = hash('sha3-512', $input_password);
-        $tblName = "accounts";
-        $sql_insert = 
-                    "INSERT INTO " . $tblName . " " . 
-                        "(username, password, fname, lname, email, dob, exp, n1, n2)  " . " " .
-                    "VALUES
-                        ('$input_username', '$hash_pw', '$input_fname', '$input_lname', " .
-                        "'$input_email', '$input_dob', '$input_experience', '$input_noti1', '$input_noti2');";
-        echo "<br>qry:" . $sql_insert . "<br><br>";
 
-        // =========INSERTING INTO ============
-        if ($conn->query($sql_insert) === TRUE) {
-            // Succesful insert
+        try {
+            
+            $serverName = "18.189.211.159:3306";
+            $username = "guest";
+            $password = "KCKMakk_4";
+            $dbName = "rangerswatch";
+            $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+            echo "made it to database! <br>";
+            
+            $tblName = "accounts";
+            $sql_insert = "INSERT INTO " . $tblName . " " . 
+                            "(username, password, fname, lname, email, dob, exp, n1, n2)  " . " " .
+                        "VALUES
+                            (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            echo "<br>qry:" . $sql_insert . "<br><br>";
+            // =========INSERTING INTO ============
+            $stmt = $conn->prepare($sql_insert);
+            if ($stmt->execute(array($input_username, $hash_pw, $input_fname, $input_lname, $input_email, 
+                             $input_dob, $input_experience, $input_noti1, $input_noti2))) {
+                echo "Record inserted successfully<br>";
 
+                // now pull from the db the account details with given parameters
+                $sql_read = "SELECT * FROM " . $tblName . " " .
+                            " WHERE username=? " . 
+                            " AND password=?;";
+                $result = $conn->prepare($sql_read);
+                if ($result->execute(array($input_username, $hash_pw))) {
+                    if ($result->rowCount() > 0) {
+                        // Successful pull of new account details
+                        echo "Found username entry<br>";
+                        // get first row
+                        $row = $result->fetch();
 
-            // now pull from the db the account details with given parameters
-            $sql_read = "SELECT * FROM " . $tblName . " " .
-                        "WHERE 
-                            username='$input_username' " . 
-                        " AND password='$hash_pw';";
-            $result = $conn->query($sql_read);
-            if ($result) {
-                if ($result->num_rows > 0) {
-                    // Successful pull of new account details
-                    echo "Found username entry<br>";
-                    // get first row
-                    $row = $result->fetch_assoc();
+                        // Giving session tokens here
+                        echo $row['fname'] . " " . $row['lname'] . "<br>";
+                        $_SESSION['username'] = $row['username'];
+                        $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
+                        $_SESSION['valid'] = true;
+                        $_SESSION['status_message'] = "";
+                        
+                        // 86400seconds = 1 day
+                        // cookies for if user set 'RememberMe' at login
+                        setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
 
-                    // Giving session tokens here
-                    echo $row['fname'] . " " . $row['lname'] . "<br>";
-                    $_SESSION['username'] = $row['username'];
-                    $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
-                    $_SESSION['valid'] = true;
-                    $_SESSION['status_message'] = "";
-                    
-                    // 86400seconds = 1 day
-                    // cookies for if user set 'RememberMe' at login
-                    setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
-                    // set destination and leave this file
-
-                    echo "New record created successfully. Going to main... <br>";
-                    header("Location: ../../main.php");
-                    return;
+                        // echo "New record created successfully. Going to main... <br>";
+                        header("Location: ../../main.php");
+                        return;
+                    } else {
+                        errorReceived("Account created, but failed authentication to login");
+                    }
                 } else {
-                    errorReceived("Account created, but failed authentication to login");
+                    errorReceived("Account created, but failed authentication query");
                 }
-            } else {
-                errorReceived("Account created, but failed authentication query");
-            }
-        } else {
-            // Could not input; either existing email or username
-            echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            $duplicateErrorStr = "";
-            if (strpos($conn->error, "accounts.username"))
-                $duplicateErrorStr = "username";
-            else if (strpos($conn->error, "accounts.email"))
-                $duplicateErrorStr = "email";
-            errorReceived("There is already an existing account with the same " . $duplicateErrorStr);
+            } 
+            $conn=null;
+        } catch (PDOException $e) {
+            $error = $e->errorInfo[2];
+
+            // changing error msg based on type
+            if (strpos($error, "accounts.username"))
+                $error = "There is already an existing account with the same username";
+            else if (strpos($stmt->error, "accounts.email"))
+                $error = "There is already an existing account with the same email";
+
+            errorReceived($error);
         }
-        $conn->close();
     }
     exit();
 ?>

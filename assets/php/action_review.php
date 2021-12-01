@@ -9,6 +9,7 @@
     function errorReceived($msg) {
         echo "<br>Received error: " . $msg . ". Returning to review<br>";
         $_SESSION['status_message'] = $msg;
+        $conn = null;
         // header("Location: ../../review.php");
     }
 
@@ -51,41 +52,34 @@
         echo "input_about=" . $input_about . "<br>";
 
         // connecting to db
-        $serverName = "18.189.211.159:3306";
-        $username = "guest";
-        $password = "KCKMakk_4";
-        $dbName = "rangerswatch";
-        // connection to database
-        $conn = new mysqli($serverName, $username, $password, $dbName); 
-        if ($conn->connect_error) {
-            errorReceived("Failed to connect to database");
-            die("Connection failed: " . $conn->connect_error);
-        } else {
+        try {
+            $serverName = "18.189.211.159:3306";
+            $username = "guest";
+            $password = "KCKMakk_4";
+            $dbName = "rangerswatch";
+            $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
             echo "made it to database! <br>";
-        }
 
-
-        $tblName = "ratings";
-        $sql_insert = "INSERT INTO " . $tblName . " " . 
-                        "(`location_id`, `username`, `value`, `comment`) " .
-                    "VALUES
-                        ('$input_id', '$input_username', '$input_rating', '$input_about');";
-        echo "<br>qry:" . $sql_insert . "<br><br>";
-
-        // =========INSERTING INTO ============
-        if ($conn->query($sql_insert) === TRUE) {
-            $conn->close();
-            // Succesful insert
-            echo "New record created successfully. Going to the reviewed object!... <br>";
-            header("Location: ../../object.php?id=" . $input_id);
-            return;
-        } else {
-            // Could not input; error executing query
-            echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            errorReceived($conn->error);
-        }
-        // Finished uploading files and submitting...
-        $conn->close();
+            $tblName = "ratings";
+            $sql_insert = "INSERT INTO " . $tblName . " " . 
+                            "(`location_id`, `username`, `value`, `comment`) " .
+                        "VALUES
+                            (?, ?, ?, ?);";
+            echo "<br>qry:" . $sql_insert . "<br><br>";
+            $stmt = $conn->prepare($sql_insert);
+            // =========INSERTING INTO ============
+            if ($stmt->execute(array($input_id, $input_username, $input_rating, $input_about))) {
+                // Succesful insert
+                echo "New record created successfully. Going to the reviewed object!... <br>";
+                header("Location: ../../object.php?id=" . $input_id);
+                return;
+            }
+            // Finished uploading files and submitting...
+            $conn = null;
+        } catch (PDOException $e){
+            $error = $e->errorInfo[2];
+            errorReceived($error);
+        } 
     }
     exit();
 ?>

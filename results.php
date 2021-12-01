@@ -60,11 +60,10 @@
 			if ($_SERVER["REQUEST_METHOD"] == "GET") {
 				// get values from form, and check if they are valid
 				$sqlFilters = "";
-
 				// building query string from search_name and search_loc
 				if (isValidEntry($_GET['input_search_name'])) {
 					$input_name = $_GET['input_search_name'];
-					$sqlFilters = " WHERE (`name` LIKE '%" . $input_name . "%')";
+					$sqlFilters = " WHERE (`name` LIKE :input_name)";
 				}
 
 
@@ -73,7 +72,6 @@
 					$latlongpresent = 1;
 					$lat = trim($latlong[0]);
 					$long = trim($latlong[1]);
-
 
 					// storing data for js to pull later; this is horrible and we should replace it at some point
 					echo "<input type='hidden' id='latlongtoken' value='" . $lat . ", " . $long . "'>";
@@ -90,25 +88,31 @@
 				$username = "guest";
 				$password = "KCKMakk_4";
 				$dbName = "rangerswatch";
-				$conn = new mysqli($serverName, $username, $password, $dbName); 
-				if ($conn->connect_error) {
-					errorReceived("Failed to connect to database");
-					die("Connection failed: " . $conn->connect_error);
-				}
-
-				// SELECT (col1, col2) FROM table WHERE ...
-				$tblName = "locations";
-				$sql_read = "SELECT * FROM " . $tblName . $sqlFilters . ";";
-				$result = $conn->query($sql_read);
-				if ($result) {
-					if (!$result->num_rows > 0) {
-						errorReceived("There were no results matching your search settings");
+				try {
+					$conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+	
+					// SELECT (col1, col2) FROM table WHERE ...
+					$tblName = "locations";
+					$sql_read = "SELECT * FROM " . $tblName . $sqlFilters . ";";
+					$result = $conn->prepare($sql_read);
+					if (!empty($input_name))
+						$result->bindValue(':input_name', "%{$input_name}%");
+					if ($result->execute()) {
+						if ($result->rowCount() > 0) {
+							$_SESSION['status_message'] = "";
+						} else {
+							errorReceived("There were no results matching your search settings");
+						}
 					}
-				} else {
-					errorReceived("Query failed: " . $conn->error);
+					// setting up query to pull ratings for a location ID; values binded later
+					$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=:location_id;";
+					$resultID = $conn->prepare($sql_getratings);
+				} catch (PDOException $e) {
+					$error = $e->errorInfo[2];
+					errorReceived($error);
 				}
 
-				// edit the search query to now watch for latlong
+				// TODO: edit the search query to now watch for latlong
 			}
 		?>
 		
@@ -122,7 +126,6 @@
 								<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
 								</div>";
 						// reset message so when you change screens and come back, msg doesn't appear again
-						$_SESSION['status_message'] = "";
 					}
 				}
 			?>
@@ -162,19 +165,18 @@
 						<?php 
 							// interleaving php data
 						$dataForJS = "";
-						if ($result && $result->num_rows > 0) {
-							while ($row  = $result->fetch_assoc()) { 
+						if ($result->rowCount() > 0) {
+							while ($row  = $result->fetch()) { 
 								$location_name = $row['name'];
 								$location_id = $row['id'];
 
 								$val_ratings = 0;
 								$num_ratings = 0;
-								// pulling data from ratings table using this location's ID
-								$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=" . $location_id . ";";
-								$result2 = $conn->query($sql_getratings);
-								if ($result2) {
-									if ($result2->num_rows > 0) {
-										$row1 = $result2->fetch_assoc();
+								// reusing query from b4, just passing new location id
+								$resultID->bindValue(':location_id', $location_id);
+								if ($resultID->execute()) {
+									if ($resultID->rowCount() > 0) {
+										$row1 = $resultID->fetch();
 										$num_ratings = $row1['total'];
 										if ($num_ratings > 0) $val_ratings = round($row1['avg'], 2);
 									}

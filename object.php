@@ -79,7 +79,6 @@
 				// building query string from search_name and search_loc
 				if (isValidEntry($_GET['id'])) {
 					$location_id = $_GET['id'];
-					$sqlFilters = " WHERE (`id`='" . $location_id . "')";
 					// $sqlFilters = " WHERE (`name` LIKE '%" . $input_name . "%')";
 				} else {
 					// you must have an id in order to request an object to render
@@ -91,60 +90,60 @@
 				$username = "guest";
 				$password = "KCKMakk_4";
 				$dbName = "rangerswatch";
-				$conn = new mysqli($serverName, $username, $password, $dbName); 
-				if ($conn->connect_error) {
-					errorReceived("Failed to connect to database");
-					die("Connection failed: " . $conn->connect_error);
-				}
+				$conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+				try {
+					
+					$tblName = "locations";
+					$sql_read = "SELECT * FROM " . $tblName . " WHERE (`id`=:location_id);";
+					$result = $conn->prepare($sql_read);
+					$result->bindValue(':location_id', $location_id);
 
-				
-				$tblName = "locations";
-				$sql_read = "SELECT * FROM " . $tblName . $sqlFilters . ";";
-				$result = $conn->query($sql_read);
+					$location_name = "";
+					$location_about = "";
+					$location_phone = "";
+					$location_email = "";
+					$location_address = "";
+					$location_lat = "";
+					$location_long = "";
+					$location_img = "";
+					$location_video = "";
 
-				$location_name = "";
-				$location_about = "";
-				$location_phone = "";
-				$location_email = "";
-				$location_address = "";
-				$location_lat = "";
-				$location_long = "";
-				$location_img = "";
-				$location_video = "";
+					if ($result->execute()) {
+						if ($result->rowCount() > 0) {
+							$row = $result->fetch();
+							$location_name = $row["name"];
+							$location_about = $row["about"];
+							$location_phone =  $row["phone"];;
+							$location_email =  $row["email"];;
+							$location_address =  $row["address"];;
+							$location_lat =  $row["latitude"];;
+							$location_long =  $row["longitude"];;
+							$location_img =  $row["image"];;
+							$location_video =  $row["video"];;
+						} else {
+							errorReceived("No results obtained with object ID " . $location_id);
+						}
+					}		
 
-				if ($result) {
-					if ($result->num_rows > 0) {
-						$row = $result->fetch_assoc();
-						$location_name = $row["name"];
-						$location_about = $row["about"];
-						$location_phone =  $row["phone"];;
-						$location_email =  $row["email"];;
-						$location_address =  $row["address"];;
-						$location_lat =  $row["latitude"];;
-						$location_long =  $row["longitude"];;
-						$location_img =  $row["image"];;
-						$location_video =  $row["video"];;
-					} else {
-						errorReceived("No results obtained with object ID " . $location_id);
+					$val_ratings = 0;
+					$num_ratings = 0;
+					// getting total number of reviews, and average rating values
+					$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=:location_id;";
+					$result2 = $conn->prepare($sql_getratings);
+					$result2->bindValue(':location_id', $location_id);
+					if ($result2->execute()) {
+						if ($result2->rowCount() > 0) {
+							$row1 = $result2->fetch();
+							$num_ratings = $row1['total'];
+							if ($num_ratings > 0) $val_ratings = round($row1['avg'], 2);
+						}
 					}
-				} else {
-					errorReceived("Query failed: " . $conn->error);
-				}
+					echo "<input type='hidden' id='latlongtoken' value='" . $location_lat . ", " . $location_long . ", " . $location_name . "'>"; 
 
-				$val_ratings = 0;
-				$num_ratings = 0;
-				// getting total number of reviews, and average rating values
-				$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=" . $location_id . ";";
-				$result2 = $conn->query($sql_getratings);
-				if ($result2) {
-					if ($result2->num_rows > 0) {
-						$row1 = $result2->fetch_assoc();
-						$num_ratings = $row1['total'];
-						if ($num_ratings > 0) $val_ratings = round($row1['avg'], 2);
-					}
+				} catch (PDOException $e) {
+					$error = $e->errorInfo[2];
+					errorReceived($error);
 				}
-				echo "<input type='hidden' id='latlongtoken' value='" . $location_lat . ", " . $location_long . ", " . $location_name . "'>";
-				
 			}
 		?>
 		
@@ -244,13 +243,15 @@
 					$val_ratings = 0;
 					$num_ratings = 0;
 					// getting total number of reviews, and average rating values
-					$sql_getratings = "SELECT * FROM ratings WHERE `location_id`=" . $location_id . " ORDER BY `created` DESC;";
-					$result3 = $conn->query($sql_getratings);
-					if (!$result3 || $result3->num_rows <= 0) {
+					$sql_getratings = "SELECT * FROM ratings WHERE `location_id`=:location_id ORDER BY `created` DESC;";
+					$result3 = $conn->prepare($sql_getratings);
+					$result3->bindValue(':location_id', $location_id);
+					$result3->execute();
+					if ($result3->rowCount() <= 0) {
 						echo "No reviews for this location at the moment. Be the <a href=review.php?id=". $location_id .">first</a> to do so!";
 					} else {
 						echo "Want to submit a review for this place? Click <a href=review.php?id=". $location_id .">here!</a><br><br>";
-						while($row = $result3->fetch_assoc()) { ?>
+						while($row = $result3->fetch()) { ?>
 							<div class="review-section">
 								<div class="ratings_bar">
 									<h4 class="rating"> <?php echo $row['username']?>: </h4>
