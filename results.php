@@ -78,7 +78,6 @@
 					// storing data for js to pull later; this is horrible and we should replace it at some point
 					echo "<input type='hidden' id='latlongtoken' value='" . $lat . ", " . $long . "'>";
 				}
-				// echo "<script type='text/javascript' src='assets/js/results.js'> addMarker(" . $lat . ", " . $long . ", 'Your location') </script>";
 				
 				// separate from the locations table, we will adjust in query later by linking it
 				$input_minrating = 0;

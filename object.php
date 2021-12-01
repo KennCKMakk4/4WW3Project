@@ -43,23 +43,139 @@
 			
 			if ($session_valid) {
 				include 'include/headersession.inc'; 
-			} else
+			} else {
 				include 'include/header.inc'; 
+			}
+
+
+			// checks if form sent valid data
+			function isValidEntry($input) {
+				return (isset($input) && !empty($input));
+			} 
+			
+			function errorReceived($msg) {
+				$_SESSION['status_message'] = $msg;
+			}
+
+			// renders stars showing the avgrating given
+			function renderStarRatings($avgratings) {
+				$starrating = $avgratings;
+				for ($loopi = 0; $loopi < 5; $loopi++) {
+					if ($starrating > 1) {
+						echo "<i class='material-icons'>star</i>";
+					} else if ($starrating > 0.5) {
+						echo "<i class='material-icons'>star_half</i>";
+					} else {
+						echo "<i class='material-icons'>star_border</i>";
+					}
+					$starrating -= 1; 
+				}
+			}
+			
+			if ($_SERVER["REQUEST_METHOD"] == "GET") {
+				// get values from form, and check if they are valid
+				$sqlFilters = "";
+
+				// building query string from search_name and search_loc
+				if (isValidEntry($_GET['id'])) {
+					$location_id = $_GET['id'];
+					$sqlFilters = " WHERE (`id`='" . $location_id . "')";
+					// $sqlFilters = " WHERE (`name` LIKE '%" . $input_name . "%')";
+				} else {
+					// you must have an id in order to request an object to render
+					errorReceived("No Object ID in Request");
+				}
+
+				// connecting to db
+				$serverName = "18.189.211.159:3306";
+				$username = "guest";
+				$password = "KCKMakk_4";
+				$dbName = "rangerswatch";
+				$conn = new mysqli($serverName, $username, $password, $dbName); 
+				if ($conn->connect_error) {
+					errorReceived("Failed to connect to database");
+					die("Connection failed: " . $conn->connect_error);
+				}
+
+				
+				$tblName = "locations";
+				$sql_read = "SELECT * FROM " . $tblName . $sqlFilters . ";";
+				$result = $conn->query($sql_read);
+
+				$location_name = "";
+				$location_about = "";
+				$location_phone = "";
+				$location_email = "";
+				$location_address = "";
+				$location_lat = "";
+				$location_long = "";
+				$location_img = "";
+				$location_video = "";
+
+				if ($result) {
+					if ($result->num_rows > 0) {
+						$row = $result->fetch_assoc();
+						$location_name = $row["name"];
+						$location_about = $row["about"];
+						$location_phone =  $row["phone"];;
+						$location_email =  $row["email"];;
+						$location_address =  $row["address"];;
+						$location_lat =  $row["latitude"];;
+						$location_long =  $row["longitude"];;
+						$location_img =  $row["image"];;
+						$location_video =  $row["video"];;
+					} else {
+						errorReceived("No results obtained with object ID " . $location_id);
+					}
+				} else {
+					errorReceived("Query failed: " . $conn->error);
+				}
+
+				$val_ratings = 0;
+				$num_ratings = 0;
+				// getting total number of reviews, and average rating values
+				$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=" . $location_id . ";";
+				$result2 = $conn->query($sql_getratings);
+				if ($result2) {
+					if ($result2->num_rows > 0) {
+						$row1 = $result2->fetch_assoc();
+						$num_ratings = $row1['total'];
+						if ($num_ratings > 0) $val_ratings = round($row1['avg'], 2);
+					}
+				}
+				echo "<input type='hidden' id='latlongtoken' value='" . $location_lat . ", " . $location_long . ", " . $location_name . "'>";
+				
+			}
 		?>
 		
 		<div class="main_body">
 		
-			<!-- title section of main body -->
 			
+			<!-- rendering error message to screen -->
+			<?php 
+				if (isset($_SESSION['status_message'])){
+					if (!empty($_SESSION['status_message'])) {
+						echo "<div class='container-row'>
+								<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
+								</div>";
+						// reset message so when you change screens and come back, msg doesn't appear again
+						$_SESSION['status_message'] = "";
+					}
+				}
+			?>
+
+			<!-- title section of main body -->
 			<div class="title">
-				<h1 id="objTitle">Hamilton Archery Centre</h1>
+				<h1 id="objTitle"> <?php echo $location_name ?></h1>
 			</div>
 
 			<!-- 'splash screen', first section of object, shows important details-->
 			<div class="objSplash">
 				<!-- map of obj -->
 				<div class="img_container">
-					<img class="img_object" alt="image of hamilton archery centre" src="assets/img/img_hamiltonarcherycentre.jpg">
+					<img class="img_object" 
+					alt="image of <?php echo $location_name?>" 
+					src="uploaded/img/<?php echo $location_img ?>">
 				</div>
 
 				<!-- ratings section of obj -->
@@ -67,15 +183,13 @@
 					<div class="ratings_bar">
 						<h3 class="rating"> User Rating: </h3>
 						<div class="ratings_star">
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star_half</i>
-							<i class="material-icons">star_border</i>
+							<?php  // rendering stars to represent ratings
+								renderStarRatings($val_ratings);
+							?>
 						</div>
 					</div>
 					<div class="ratings_num">
-						<p> 3.5 average ratings out of 254 reviewers </p>
+						<p> <?php echo $val_ratings; ?> average ratings out of <?php echo $num_ratings; ?> reviewers </p>
 					</div>
 				</div>
 
@@ -84,16 +198,9 @@
 			<!-- Description: -->
 			<div class="main_section">
 				<h2>About</h2>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
-					eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut 
-					enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-					nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor 
-					in reprehenderit in voluptate velit esse cillum dolore eu fugiat 
-					nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
-					sunt in culpa qui officia deserunt mollit anim id est laborum.
-				</p>
+				<p><?php echo $location_about ?></p>
 				<h3>Contact:</h3>
-				<p>(905) 979-4811 <br>hamiltonarcherycentre@gmail.com</p>
+				<p><?php echo $location_phone . "<br>" . $location_email ?></p>
 			</div>
 			
 			<!-- Location -->
@@ -106,68 +213,57 @@
 					<div class="obj_add_map">
 						<!-- address -->
 						<h3> Address </h3>
-						<p>
-							148 Parkdale Avenue North <br>
-							Lower Level <br>
-							Hamilton, Ontario <br>
-							L8H 5X2
-						</p>
+						<p><?php echo $location_address ?></p>
 						<!-- map -->
 						<div class="img_container">
-							<!-- <img class="img_object" alt="map of hamilton archery centre" src="assets/img/map_hamiltonarcherycentre.png"> -->
 							<div class="map_object" id="mymap"></div>
 						</div>
 					</div>
 					
 					<!-- video -->
+					<?php 
+					if (!empty($location_video)) { ?>
 					<div class="obj_vid_container">
 						<video class="obj_video" controls autoplay muted>
-							<source src="assets/media/sample.webm" type="video/webm">
-							Sample Video could not be loaded
-						</video>
+								<source src="uploaded/video/<?php echo $location_video ?>" type="video/webm">
+								Sample Video could not be loaded
+							</video>
 					</div>
+					<?php } ?>
 				</div>
-				<h3>Hours Open:</h3>
-				<p>Currently closed for renovations.</p>
+				<!-- <h3>Hours Open:</h3>
+				<p>Currently closed for renovations.</p> -->
 			</div>
 			
 			<!-- reviews -->
 			<div class="main_section">
 				<h2>Reviews</h2>
-				<div class="review-section">
-					<div class="ratings_bar">
-						<h4 class="rating"> Random Bloke: </h4>
-						<div class="ratings_star">
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star_half</i>
-							<i class="material-icons">star_border</i>
-						</div>
-					</div>
-					<p>
-						A pretty good place to go for archery whether or not you have had experience. 
-						They offer lessons as well as walk-in session for all users. Lots of space outdoors as well to look around.
-						Highly recommend with archers of all experience.
-					</p>
-				</div>
 
-				
-				<div class="review-section">
-					<div class="ratings_bar">
-						<h4 class="rating"> NotABot: </h4>
-						<div class="ratings_star">
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star</i>
-							<i class="material-icons">star_half</i>
-							<i class="material-icons">star_border</i>
-						</div>
-					</div>
-					<p>
-						It's aight.
-					</p>
-				</div>
+
+				<?php
+					$val_ratings = 0;
+					$num_ratings = 0;
+					// getting total number of reviews, and average rating values
+					$sql_getratings = "SELECT * FROM ratings WHERE `location_id`=" . $location_id . " ORDER BY `created` DESC;";
+					$result3 = $conn->query($sql_getratings);
+					if (!$result3 || $result3->num_rows <= 0) {
+						echo "No reviews for this location at the moment. Be the <a href=review.php?id=". $location_id .">first</a> to do so!";
+					} else {
+						echo "Want to submit a review for this place? Click <a href=review.php?id=". $location_id .">here!</a><br><br>";
+						while($row = $result3->fetch_assoc()) { ?>
+							<div class="review-section">
+								<div class="ratings_bar">
+									<h4 class="rating"> <?php echo $row['username']?>: </h4>
+									<div class="ratings_star">
+										<?php renderStarRatings($row['value']); ?>
+									</div>
+								</div>
+								<?php echo "\t\t\t" . $row['created']; ?>
+								<p><?php echo $row['comment']?> </p>
+							</div>
+						<?php }
+					}
+				?>
 			</div>
 		</div>
 		

@@ -6,11 +6,7 @@ function initialize() {
     initializeMap();
 
 
-    // sets location/center of map
-    mymap.setView([43.240260, -79.789990], 15);
-    // Hamilton Archery Centre
-    addMarker( 43.240260, -79.789990,
-        "Hamilton Archery Centre", "object.html");
+    findMarkers();
 
         // create a blank pop-up for later use
     // display a popup when the user clicks on the map
@@ -31,6 +27,21 @@ function initializeMap() {
         ).addTo(mymap);
 }
 
+function findMarkers() {
+    // find data from php and render them
+
+    // first - create a marker around our search location
+    var latlongtoken = document.getElementById("latlongtoken");
+    if (latlongtoken != null) {
+        console.log("got data");
+        let data = latlongtoken.value.split(", ");
+        addMarker( data[0], data[1], data[2]);
+        mymap.setView([data[0], data[1]], 15);
+    } else {
+        console.log("No lat long data");
+        latlongtoken = 0;
+    }
+}
 // creates a marker with the latitude, longitude, location name, and the link to the location
 // atm we just link to the sample object
 function addMarker(lat, long, locName, locLink) {
