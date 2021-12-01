@@ -53,7 +53,6 @@
 			} 
 			
 			function errorReceived($msg) {
-				echo "<br>Received error: " . $msg . ". Returning to search<br>";
 				$_SESSION['status_message'] = $msg;
 			}
 
@@ -82,6 +81,7 @@
 				// echo "<script type='text/javascript' src='assets/js/results.js'> addMarker(" . $lat . ", " . $long . ", 'Your location') </script>";
 				
 				// separate from the locations table, we will adjust in query later by linking it
+				$input_minrating = 0;
 				if (isValidEntry($_GET['minrating'])) {
 					$input_minrating = $_GET['minrating'];
 				}
@@ -109,21 +109,11 @@
 					errorReceived("Query failed: " . $conn->error);
 				}
 
-				// edit the search query
+				// edit the search query to now watch for latlong
 			}
 		?>
 		
 		<div class="main_body">
-		
-			<!-- title section of main body -->
-			<div class="title">
-				<h1 id="objTitle">Showing results <?php 
-						$searchtext = "";
-						if (isValidEntry($_GET['input_search_name'])) $searchtext = $searchtext . " containing '" . $_GET['input_search_name'] . "'";
-						if (isValidEntry($_GET['input_search_loc'])) $searchtext = $searchtext . " near '" . $_GET['input_search_loc'] . "'";
-						echo $searchtext;
-						?> </h1>
-			</div>
 
 			<!-- rendering error message to screen -->
 			<?php 
@@ -137,6 +127,17 @@
 					}
 				}
 			?>
+		
+			<!-- title section of main body -->
+			<div class="title">
+				<h1 id="objTitle">Showing results <?php 
+						$searchtext = "";
+						if (isValidEntry($_GET['input_search_name'])) $searchtext = $searchtext . " containing '" . $_GET['input_search_name'] . "'";
+						if (isValidEntry($_GET['input_search_loc'])) $searchtext = $searchtext . " near '" . $_GET['input_search_loc'] . "'";
+						if ($input_minrating > 0) $searchtext = $searchtext . " with minimum rating '" . $input_minrating . "'";
+						echo $searchtext;
+						?> </h1>
+			</div>
 
 			<!-- larger splash scection of page; contains only the map of all locations atm-->
 			<div class="objSplash">
@@ -167,7 +168,7 @@
 								$location_name = $row['name'];
 								$location_id = $row['id'];
 
-								$val_ratings = "None";
+								$val_ratings = 0;
 								$num_ratings = 0;
 								// pulling data from ratings table using this location's ID
 								$sql_getratings = "SELECT `location_id`, COUNT(`value`) AS `total`, AVG(`value`) AS `avg` FROM ratings WHERE `location_id`=" . $location_id . ";";
@@ -179,12 +180,19 @@
 										if ($num_ratings > 0) $val_ratings = round($row1['avg'], 2);
 									}
 								}
+
+								// Filter out minimum ratings
+								if ($val_ratings < $input_minrating) {
+									// skip to next loop without rendering
+									continue;
+								}
+								// appending the data
 								if (!empty($dataForJS)) $dataForJS = $dataForJS . ", ";
 								$dataForJS = $dataForJS . $row['latitude'] . ", " . $row['longitude'] . ", " . $row['name'] . ", " . $row['id'];
 						?>
 							<tr>
 								<td><?php echo "<a href='object.php?id=" . $location_id . "'>" . $location_name . "</a>";  ?></td>
-								<td><?php echo "Rating: " . $val_ratings . "<br>" . $num_ratings . " reviews"; ?></td>
+								<td><?php echo "Rating: " . ($val_ratings == 0 ? "None" : $val_ratings) . "<br>" . $num_ratings . " reviews"; ?></td>
 								<td><?php echo $row['address']; ?></td>
 							</tr>
 							<?php 
