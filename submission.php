@@ -46,12 +46,7 @@
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
 			
 			<!-- start of form - no action yet -->
-			<form name="submissionForm" class="form_submission" enctype="multipart/form-data" method="post" action="assets/php/action_submit.php"> <!-- onsubmit="return validate(this)" Disabled for HTML5 Form Validation instead -->
-
-				<!-- using container-row to have all elements in div to be in-line-->
-				<!-- each row has a label and an input; label is class text_bar, inputs are class input_box-->
-				<!-- allows for colouring of label, aesthetics -->
-
+			<form name="submissionForm" class="form_submission" enctype="multipart/form-data" method="post" onsubmit="return validate(this)" action="assets/php/action_submit.php"> 
 				<!-- Name of location -->
 				<div class="container-row">
 					<label class="text_bar left-rounded bg-green">Name*</label>
@@ -132,14 +127,6 @@
 				<!-- submit button -->
 				<div class="container-row">
 					<input type="submit" value="Submit" class="form_button">
-					<!--
-					<a href="object.php">
-						<button class="form_button">
-							<i class="material-icons">done</i>
-							<p class="form_button_text">Submit</p>
-						</button>
-					</a> 
-					-->
 				</div>
 			</form>
 		</div>

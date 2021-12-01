@@ -202,27 +202,6 @@
 						// storing data for js to pull later; this is horrible and we should replace it at some point
 						echo "<input type='hidden' id='locationtoken' value='" . $dataForJS . "'>";
 						?>
-						<!-- <tr>
-							<td><a href="object.php">Evolve Archery Canada</a></td>
-							<td>4.6 stars<br>53 reviews</td>
-							<td>375 Wettlaufer Terrace<br>
-								Milton, ON <br>
-								L9T 7N4</td>
-						</tr>
-						<tr>
-							<td><a href="object.php">Silver Swords Armories</a></td>
-							<td>4.4 stars<br>95 reviews</td>
-							<td>180 Burnhamthorpe Road E<br>
-								Oakville, ON <br>
-								L6H 7B5</td>
-						</tr>
-						<tr>
-							<td><a href="object.php">Badenoch Archery</a></td>
-							<td>4.6 stars<br>11 reviews</td>
-							<td>15 Badenoch Street<br>
-								Morriston, ON <br>
-								N0B 2C0</td>
-						</tr> -->
 					</tbody>
 				</table>
 			</div>

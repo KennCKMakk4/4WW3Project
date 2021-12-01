@@ -107,17 +107,6 @@
 
         echo "Extra fields: <br>";
         echo $sqlColExtra . "<br>" . $sqlValExtra . "<br>";
-        // video
-        // if (isValidEntry($_POST['input_video'])) {
-        //     $input_video = $_POST['input_video'];
-        //     if (!empty($sqlColExtra)) {
-        //         $sqlColExtra = $sqlColExtra . ", ";
-        //         $sqlValExtra = $sqlValExtra . ", ";
-        //     }
-        //     $sqlColExtra = $sqlColExtra . "video";
-        //     $sqlValExtra = $sqlValExtra . "'" . $input_video . "'"; 
-        // }
-
 
         // connecting to db
         $serverName = "18.189.211.159:3306";

@@ -69,14 +69,6 @@
 				<!-- submit button -->
 				<div class="container-row">
 					<input type="submit" value="Submit" class="form_button">
-					<!--
-					<a href="object.php">
-						<button class="form_button">
-							<i class="material-icons">done</i>
-							<p class="form_button_text">Submit</p>
-						</button>
-					</a> 
-					-->
 				</div>
 			</form>
 		</div>

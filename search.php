@@ -89,23 +89,7 @@
 
 				<!-- submit button -->
 				<div class="container-row">
-					<!-- Input 'submit' for form validation 
-					-->
 					<input class="form_button " type="submit" value="Submit" class="form_button">
-
-					<!-- Move to results.php (temporarily) so that we can move things along -->
-					<a href="results.php">
-						<div class="form_button">
-							<i class="material-icons">search</i>
-							<p class="form_button_text">Search (Move to results.php)</p>
-						</div>
-					</a> 
-					<!-- same thing here ; we're using a regular div instead of button so that we can move along to the results page
-						<button class="form_button">
-							<i class="material-icons">search</i>
-							<p class="form_button_text">Search</p>
-						</button>
-					-->
 				</div>
 			</form>
 		</div>
