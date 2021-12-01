@@ -46,7 +46,7 @@
 			<div class="title"><h1 id="objTitle">Submit a New Location</h1></div>
 			
 			<!-- start of form - no action yet -->
-			<form name="submissionForm" class="form_submission" method="post" action="assets/php/action_submit.php"> <!-- onsubmit="return validate(this)" Disabled for HTML5 Form Validation instead -->
+			<form name="submissionForm" class="form_submission" enctype="multipart/form-data" method="post" action="assets/php/action_submit.php"> <!-- onsubmit="return validate(this)" Disabled for HTML5 Form Validation instead -->
 
 				<!-- using container-row to have all elements in div to be in-line-->
 				<!-- each row has a label and an input; label is class text_bar, inputs are class input_box-->
@@ -108,16 +108,16 @@
 						placeholder="longitude">
 				</div>
 				<!-- image uploading -->
-				<div class="container-row-file">
-					<label class="text_bar ">Image*</label>
-					<label class="file_upload"><input class="file_upload" type="file" accept="image/*" name="input_image" required>Upload Image</label> 
+				<div class="container-row">
+					<label class="text_bar left-rounded bg-green">Image*</label>
+					<input class="input_box right-rounded file_upload" id="input_image" type="file" accept="image/*" name="input_image" required>
 				</div>
 
 				<!-- video uploading -->
-				<!-- <div class="container-row-file">
-					<label class="text_bar">Video</label>
-					<label class="file_upload"><input class="file_upload" type="file" accept="video/*" name="input_video">Upload Video</label> 
-				</div> -->
+				<div class="container-row">
+					<label class="text_bar left-rounded bg-green">Video</label>
+					<input class="input_box right-rounded file_upload" id="input_video" type="file" accept="video/*" name="input_video">
+				</div>
 			
 				<!-- rendering error message to screen -->
 				<?php 
@@ -126,8 +126,6 @@
 							echo "<div class='container-row'>
 									<p class='error_message'> Error: " . $_SESSION['status_message'] . "</p>
 									</div>";
-							// reset message so when you change screens and come back, msg doesn't appear again
-							$_SESSION['status_message'] = "";
 						}
 				?>
 

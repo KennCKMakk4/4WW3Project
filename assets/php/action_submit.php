@@ -45,12 +45,16 @@
             errorReceived("Empty longitude received");
         }
 
-        if (isValidEntry($_POST['input_image'])) {
-            $input_image = $_POST['input_image'];
+        // arraykey = name, type, tmp_name, error, size
+        // tmp_name is the file location
+        if (isValidEntry($_FILES['input_image']['name'])) {
+            $extension = "." . strtolower(pathinfo($_FILES['input_image']['name'], PATHINFO_EXTENSION));
+            // generating new name for files
+            $input_image = "img_" . str_replace(' ', '', strtolower($input_name)) . $extension;
+            $input_image_dir = $_FILES['input_image']['tmp_name'];
         } else {
             errorReceived("Empty image received");
         }
-
 
         // Finished reading
         if(!isset($_SESSION['valid']) || !($_SESSION['valid']))
@@ -66,6 +70,7 @@
         echo "input_longitude=" . $input_longitude . "<br>";
         echo "input_username=" . $input_username . "<br>";
         echo "input_image=" . $input_image . "<br>";
+        echo "input_image_dir=" . $input_image_dir . "<br>";
 
 
         // handling non-required values if there is something present
@@ -90,11 +95,15 @@
             $sqlValExtra = $sqlValExtra . ", '" . $input_address . "'";
         }
 
-        if (isValidEntry($_POST['input_video'])) {
-            $input_video = $_POST['input_video'];
+        if (isValidEntry($_FILES['input_video']['name'])) {
+            $extension = "." . strtolower(pathinfo($_FILES['input_video']['name'], PATHINFO_EXTENSION));
+            // new name for file
+            $input_video = "vid_" . str_replace(' ', '', strtolower($input_name)) . $extension;
+            $input_video_dir = $_FILES['input_video']['tmp_name'];
             $sqlColExtra = $sqlColExtra . ", video";
             $sqlValExtra = $sqlValExtra . ", '" . $input_video . "'";
         }
+        
 
         echo "Extra fields: <br>";
         echo $sqlColExtra . "<br>" . $sqlValExtra . "<br>";
@@ -135,71 +144,62 @@
             echo "made it to database! <br>";
         }
 
-        // INSERT INTO table (col1, col2, ..) VALUES (val1, val2)  - note val1 may not be necessary if you have autoincrement
-        $tblName = "locations";
-        $sql_insert = 
-                    "INSERT INTO " . $tblName . " " . 
-                        "(name, about, latitude, longitude, username, image" . $sqlColExtra . ") " .
-                    "VALUES
-                        ('$input_name', '$input_about', '$input_latitude', '$input_longitude', '$input_username', " .
-                        "'$input_image'" . $sqlValExtra . ");";
-        echo "<br>qry:" . $sql_insert . "<br><br>";
 
-        // =========INSERTING INTO ============
-        if ($conn->query($sql_insert) === TRUE) {
-            // Succesful insert
-            echo "New record created successfully. Going to the new object!... <br>";
+        // UPLOADING FILES
+        $target_dir = "../../uploaded/img/";              // name of destination
+        $target_file = $target_dir . $input_image; // name of destination + file
+        if (move_uploaded_file($input_image_dir, $target_file)) {
+            echo "Successful creation of img @ " . $target_file . "<br>";
 
-            // TODO: Point user to new object
-            header("Location: ../../object.php");
-            return;
-
-            // // now pull from the db the account details with given parameters
-            // $sql_read = "SELECT * FROM " . $tblName . " " .
-            //             "WHERE 
-            //                 username='$input_username' " . 
-            //             " AND password='$hash_pw';";
-            // $result = $conn->query($sql_read);
-            // if ($result) {
-            //     if ($result->num_rows > 0) {
-            //         // Successful pull of new account details
-            //         echo "Found username entry<br>";
-            //         // get first row
-            //         $row = $result->fetch_assoc();
-
-            //         // Giving session tokens here
-            //         echo $row['fname'] . " " . $row['lname'] . "<br>";
-            //         $_SESSION['username'] = $row['username'];
-            //         $_SESSION['fullname'] = $row["fname"] . " " . $row["lname"];
-            //         $_SESSION['valid'] = true;
-            //         $_SESSION['status_message'] = "";
-                    
-            //         // 86400seconds = 1 day
-            //         // cookies for if user set 'RememberMe' at login
-            //         setcookie('username', $_POST['input_username'], time() + (86400 * 30), "/");
-            //         // set destination and leave this file
-
-            //         echo "New record created successfully. Going to main... <br>";
-            //         header("Location: ../../main.php");
-            //         return;
-            //     } else {
-            //         errorReceived("Account created, but failed authentication to login");
-            //     }
-            // } else {
-            //     errorReceived("Account created, but failed authentication query");
-            // }
-        } else {
-            // Could not input; either existing email or username
-            echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
-            $duplicateErrorStr = "";
-            if (strpos($conn->error, "locations.name")) {
-                $duplicateErrorStr = "name";
-                errorReceived("There is already an existing place with the same " . $duplicateErrorStr);
-            } else {
-                errorReceived($conn->error);
+            if (isValidEntry($_FILES['input_video']['name'])) {
+                $target_dir = "../../uploaded/video/";              // name of destination
+                $target_file = $target_dir . $input_video; // name of destination + file
+                if (move_uploaded_file($input_video_dir, $target_file)) {
+                    echo "Successful creation of video @ " . $target_file . "<br>";
+                } else {
+                    errorReceived("Failed to upload image during submission");
+                }
             }
+
+            echo "Files uploaded - inserting into DB<br>";
+            $tblName = "locations";
+            $sql_insert = "INSERT INTO " . $tblName . " " . 
+                            "(name, about, latitude, longitude, username, image" . $sqlColExtra . ") " .
+                        "VALUES
+                            ('$input_name', '$input_about', '$input_latitude', '$input_longitude', '$input_username', " .
+                            "'$input_image'" . $sqlValExtra . ");";
+            echo "<br>qry:" . $sql_insert . "<br><br>";
+
+            // =========INSERTING INTO ============
+            if ($conn->query($sql_insert) === TRUE) {
+                // Succesful insert
+                echo "New record created successfully. Going to the new object!... <br>";
+
+                // TODO: Point user to new object
+                header("Location: ../../object.php");
+                return;
+
+               
+            } else {
+                // Could not input; error executing query
+                echo "Error: " . $sql_insert . "<br>" . $conn->error . "<br>";
+                $duplicateErrorStr = "";
+                if (strpos($conn->error, "locations.name")) {
+                    $duplicateErrorStr = "name";
+                    errorReceived("There is already an existing place with the same " . $duplicateErrorStr);
+                } else {
+                    errorReceived($conn->error);
+                }
+            }
+
+            // Finished uploading files and submitting...
+            $conn->close();
+
+        } else {
+            // File upload failed
+            errorReceived("Failed to upload image during submission");
         }
-        $conn->close();
+        
     }
     exit();
 ?>

@@ -145,27 +145,14 @@ textarea.input_box {
 	height: 200px;
 }
 
-/* done to change the upload input button appearance */
-input[type="file"] {
-	display: none;
-}
-
 /* new apprearance for upload button */
 .file_upload {
-	border-radius: 5px;
-
-	width: 10em;
-	height: 1.8em;
-
-	margin: 15px 0px 0px 0px;
-	padding: 0px 5px;
-
-	border:1px solid darkgreen;
-	color: white;
+	padding: 0.5em;
+	/* color: white; */
 	text-align: center;
 	align-items: center;
 	font-size: 0.9em;
-	background: green; 
+	background: white; 
 	line-height: 1.7em;
 }
 
