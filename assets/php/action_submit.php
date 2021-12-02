@@ -97,10 +97,9 @@
         }
 
         // UPLOADING FILES
-        $target_dir = "../../uploaded/img/";              // name of destination
-        $target_file = $target_dir . $input_image;        // name of destination + file
-
+        echo "Generating connection to bucket";
         require "bktconn.php";
+        echo "Got connection to bucket";
         try {
             $fileUpload = $s3Client->putObject([
                 'Bucket' => $bktName,
