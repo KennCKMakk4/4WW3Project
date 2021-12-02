@@ -186,8 +186,9 @@
 								// appending the data
 								if (!empty($dataForJS)) $dataForJS = $dataForJS . ", ";
 								$dataForJS = $dataForJS . $row['latitude'] . ", " . $row['longitude'] . ", " . $row['name'] . ", " . $row['id'];
+								// Now, we render the table row with the data
 						?>
-							<tr>
+							<tr onmouseover="setMarkerTo(this)">
 								<td><?php echo "<a href='object.php?id=" . $location_id . "'>" . $location_name . "</a>";  ?></td>
 								<td><?php echo "Rating: " . ($val_ratings == 0 ? "None" : $val_ratings) . "<br>" . $num_ratings . " reviews"; ?></td>
 								<td><?php echo $row['address']; ?></td>

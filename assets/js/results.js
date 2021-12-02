@@ -77,6 +77,27 @@ function findMarkers() {
     }
 }
 
+
+// On hover over this table row, we center the map on that location
+function setMarkerTo(element) {
+    var contentsInColumn1 = element.children[0].innerHTML;
+    if (!contentsInColumn1) 
+        return;
+    // removing <a>name</a> tags
+    var name = contentsInColumn1.split(">")[1].split("<")[0];
+
+    // finding name from our token data to re-get latlong we used at the very beginning
+    var data = locationtoken.value.split(", ");
+    // each set of 4 is details for one object
+    // lat, long, name, id, lat, long, name, id...
+    for (var i = 0; i < data.length; i+=4) {
+        // if we found the name
+        if (data[i+2] === name) {
+            // set view
+            mymap.setView([data[i],data[i+1]], 10);
+        }
+    }
+}
 // creates a marker with the latitude, longitude, location name, and the link to the location
 // atm we just link to the sample object
 function addMarker(lat, long, locName, locLink) {
