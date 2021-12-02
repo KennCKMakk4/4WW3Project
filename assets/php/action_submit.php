@@ -97,7 +97,7 @@
         }
 
         // UPLOADING FILES
-        require "bktconn.php";
+        require "../../bktconn.php";
         try {
             $fileUpload = $s3Client->putObject([
                 'Bucket' => $bktName,
