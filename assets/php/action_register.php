@@ -100,7 +100,7 @@
         $hash_pw = hash('sha3-512', $input_password);
 
         try {
-            require "dbconn.php";
+            require "../../dbconn.php";
             echo "made it to database! <br>";
             
             $tblName = "accounts";

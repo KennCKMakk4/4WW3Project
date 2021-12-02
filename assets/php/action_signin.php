@@ -42,7 +42,7 @@
 
         // connection to DB
         try {
-            require "dbconn.php";
+            require "../../dbconn.php";
             echo "made it to database! <br>";
 
             $tblName = "accounts";

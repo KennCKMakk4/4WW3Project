@@ -130,7 +130,7 @@
         echo "Files uploaded - inserting into DB<br>";
         try {
             // connecting to db; returns $conn
-            require "dbconn.php";
+            require "../../dbconn.php";
             echo "made it to database! <br>";
 
             $tblName = "locations";

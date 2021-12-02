@@ -53,7 +53,7 @@
 
         // connecting to db
         try {
-            require "dbconn.php";
+            require "../../dbconn.php";
             echo "made it to database! <br>";
 
             $tblName = "ratings";
