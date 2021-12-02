@@ -86,13 +86,8 @@
 				}
 
 				// connecting to db
-				$serverName = "18.189.211.159:3306";
-				$username = "guest";
-				$password = "KCKMakk_4";
-				$dbName = "rangerswatch";
-				$conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
 				try {
-					
+					require "dbconn.php";
 					$tblName = "locations";
 					$sql_read = "SELECT * FROM " . $tblName . " WHERE (`id`=:location_id);";
 					$result = $conn->prepare($sql_read);
@@ -144,6 +139,30 @@
 					$error = $e->errorInfo[2];
 					errorReceived($error);
 				}
+
+				require 'bktconn.php';
+				try {
+					// checking for img, then replace it with url to object from bucket
+					if (!empty($location_img)) {
+						$fileDownload = $s3Client->getCommand('GetObject', [
+							'Bucket' => $bktName, 'Key' => $location_img
+						]);
+						$request = $s3Client->createPresignedRequest($fileDownload, '+5 minutes');
+						$presignedUrl = (string)$request->getUri();
+						$location_img = $presignedUrl; 	// storing url to img
+					}
+
+					if (!empty($location_video)) {
+						$fileDownload = $s3Client->getCommand('GetObject', [
+							'Bucket' => $bktName, 'Key' => $location_video
+						]);
+						$request = $s3Client->createPresignedRequest($fileDownload, '+5 minutes');
+						$presignedUrl = (string)$request->getUri();
+						$location_video = $presignedUrl; 	// storing url to img
+					}
+				} catch (S3Exception $e) {
+					errorReceived("Could not gather media data from bucket: " . $e->getMessage());
+				}
 			}
 		?>
 		
@@ -174,7 +193,7 @@
 				<div class="img_container">
 					<img class="img_object" 
 					alt="image of <?php echo $location_name?>" 
-					src="uploaded/img/<?php echo $location_img ?>">
+					src="<?php echo $location_img ?>">
 				</div>
 
 				<!-- ratings section of obj -->
@@ -224,7 +243,7 @@
 					if (!empty($location_video)) { ?>
 					<div class="obj_vid_container">
 						<video class="obj_video" controls autoplay muted>
-								<source src="uploaded/video/<?php echo $location_video ?>" type="video/webm">
+								<source src="<?php echo $location_video ?>" type="video/webm">
 								Sample Video could not be loaded
 							</video>
 					</div>

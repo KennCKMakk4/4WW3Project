@@ -1,2 +1,5 @@
 # Remove zip files from being uploaded
 *.zip
+
+bktconn.php
+dbconn.php

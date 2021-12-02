@@ -99,71 +99,76 @@
         // UPLOADING FILES
         $target_dir = "../../uploaded/img/";              // name of destination
         $target_file = $target_dir . $input_image;        // name of destination + file
-        if (move_uploaded_file($input_image_dir, $target_file)) {
-            echo "Successful creation of img @ " . $target_file . "<br>";
 
-            if (isValidEntry($_FILES['input_video']['name'])) {
-                $target_dir = "../../uploaded/video/";              // name of destination
-                $target_file = $target_dir . $input_video; // name of destination + file
-                if (move_uploaded_file($input_video_dir, $target_file)) {
-                    echo "Successful creation of video @ " . $target_file . "<br>";
-                } else {
-                    $_SESSION['status_message'] = "Failed to upload image during submission";
-                }
-            }
-            echo "Files uploaded - inserting into DB<br>";
-        // connecting to db to insert record
+        require "bktconn.php";
+        try {
+            $fileUpload = $s3Client->putObject([
+                'Bucket' => $bktName,
+                'Key' => $input_image,              // name of file
+                'SourceFile' => $input_image_dir,   // name of filedirectory to be uploaded
+            ]); 
+        } catch (S3Exception $e) {
+            errorReceived("Could not upload image: " . $e->getMessage());
+        }
+        echo "Successful creation of image " . $input_image . "<br>";
+
+        if (isValidEntry($_FILES['input_video']['name'])) {
             try {
-                // connecting to db
-                $serverName = "18.189.211.159:3306";
-                $username = "guest";
-                $password = "KCKMakk_4";
-                $dbName = "rangerswatch";
-                // connection to database
-                $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password);         
-                echo "made it to database! <br>";
+                $fileUpload = $s3Client->putObject([
+                    'Bucket' => $bktName,
+                    'Key' => $input_video,              // name of file
+                    'SourceFile' => $input_video_dir,   // name of filedirectory to be uploaded
+                ]); 
+            } catch (S3Exception $e) {
+                // don't coimpletely end this line if video fails to upload
+                $_SESSION['status_message'] = "Failed to upload video during submission";
+            }
+            echo "Successful creation of video " . $input_video . "<br>";
+        }
 
-                $tblName = "locations";
-                $sql_insert = "INSERT INTO " . $tblName . " " . 
-                                "(name, about, latitude, longitude, username, image, video, phone, email, address) " .
-                            "VALUES
-                                (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-                echo "<br>qry:" . $sql_insert . "<br><br>";
-                $vals = array($input_name, $input_about, $input_latitude, $input_longitude, $input_username, $input_image, 
-                            $input_video, $input_phone, $input_email, $input_address);
-                // =========INSERTING INTO ============
-                $stmt = $conn->prepare($sql_insert);
-                if ($stmt->execute($vals)) {
-                    // Succesful insert
-                    echo "New record created successfully. Going to the new object!... <br>";
-                    $sql_getnew = "SELECT * FROM " . $tblName . " WHERE (`name` LIKE ?)";
-                    $stmt2 = $conn->prepare($sql_getnew);
-                    $stmt2->bindValue(1, "%{$input_name}");
-                    $id = 0;
-                    if ($stmt2->execute()) {
-                        if ($stmt2->rowCount() > 0) {
-                            $result = $stmt2->fetch();
-                            $id = $result['id'];
-                        }
+        
+        echo "Files uploaded - inserting into DB<br>";
+        try {
+            // connecting to db; returns $conn
+            require "dbconn.php";
+            echo "made it to database! <br>";
+
+            $tblName = "locations";
+            $sql_insert = "INSERT INTO " . $tblName . " " . 
+                            "(name, about, latitude, longitude, username, image, video, phone, email, address) " .
+                        "VALUES
+                            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+            echo "<br>qry:" . $sql_insert . "<br><br>";
+            $vals = array($input_name, $input_about, $input_latitude, $input_longitude, $input_username, $input_image, 
+                        $input_video, $input_phone, $input_email, $input_address);
+            // =========INSERTING INTO ============
+            $stmt = $conn->prepare($sql_insert);
+            if ($stmt->execute($vals)) {
+                // Succesful insert
+                echo "New record created successfully. Going to the new object!... <br>";
+                $sql_getnew = "SELECT * FROM " . $tblName . " WHERE (`name` LIKE ?)";
+                $stmt2 = $conn->prepare($sql_getnew);
+                $stmt2->bindValue(1, "%{$input_name}");
+                $id = 0;
+                if ($stmt2->execute()) {
+                    if ($stmt2->rowCount() > 0) {
+                        $result = $stmt2->fetch();
+                        $id = $result['id'];
                     }
-                    header("Location: ../../object.php?id=" . $id);
-                    return;
                 }
-
-                // Finished uploading files and submitting...
-                $conn = null;
-            }  catch (PDOException $e) {
-                $error = $e->errorInfo[2];
-                // changing error msg based on type
-                if (strpos($error, "locations.name"))
-                    $error = "There is already an existing place with the same name";
-    
-                errorReceived($error);
+                header("Location: ../../object.php?id=" . $id);
+                return;
             }
 
-        } else {
-            // File upload failed
-            errorReceived("Failed to upload image during submission");
+            // Finished uploading files and submitting...
+            $conn = null;
+        }  catch (PDOException $e) {
+            $error = $e->errorInfo[2];
+            // changing error msg based on type
+            if (strpos($error, "locations.name"))
+                $error = "There is already an existing place with the same name";
+
+            errorReceived($error);
         }
         
     }

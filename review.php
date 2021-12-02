@@ -61,12 +61,8 @@
 				}
 
 				// connecting to db
-				$serverName = "18.189.211.159:3306";
-				$username = "guest";
-				$password = "KCKMakk_4";
-				$dbName = "rangerswatch";
 				try {
-					$conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+					require "dbconn.php";
 					$tblName = "locations";
 					$sql_read = "SELECT `name` FROM " . $tblName . " WHERE `id`=?;";
 					$result = $conn->prepare($sql_read);

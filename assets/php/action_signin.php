@@ -42,11 +42,7 @@
 
         // connection to DB
         try {
-            $serverName = "18.189.211.159:3306";
-            $username = "guest";
-            $password = "KCKMakk_4";
-            $dbName = "rangerswatch";
-            $conn = new PDO("mysql:host=".$serverName .";dbname=" . $dbName, $username, $password); 
+            require "dbconn.php";
             echo "made it to database! <br>";
 
             $tblName = "accounts";
