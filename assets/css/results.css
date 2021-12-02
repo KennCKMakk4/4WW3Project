@@ -48,6 +48,10 @@ td {
 	td {
 		padding: 0;
 	}
+	.map_object {
+		width: inherit;
+		height: 300px;
+	}
 }
 
 /* hide underlining and colouring of links inside table */
