@@ -6,6 +6,10 @@ function initialize() {
     initializeMap();
 
     findMarkers();
+    
+    var latlongtoken = document.getElementById("latlongtoken");
+    if (latlongtoken != null) 
+        findDistances();
     // create a blank pop-up for later use
     // display a popup when the user clicks on the map
     function onMapClick(e) {
@@ -87,6 +91,7 @@ function setMarkerTo(element) {
     var name = extractDataFromCell(contentsInColumn0, 0);
 
     // finding name from our token data to re-get latlong we used at the very beginning
+    var locationtoken = document.getElementById("locationtoken");
     var data = locationtoken.value.split(", ");
     // each set of 4 is details for one object
     // lat, long, name, id, lat, long, name, id...
@@ -184,4 +189,71 @@ function sortTable(columnNum) {
         }
     }
     lastSelectedColumn = columnNum;
+}
+
+function findDistances() {
+    var locationtoken = document.getElementById("locationtoken");
+    var data = locationtoken.value.split(", ");
+    for (var i = 0; i < data.length; i+=4) {
+        var cellDistance = document.getElementById(data[i+3]);
+        getDistance(cellDistance, data[i+3]);
+    }
+}
+
+function getDistance(element, location_id) {
+    var latlongtoken = document.getElementById("latlongtoken");
+    var lat1; var long1;
+    if (latlongtoken != null) {
+        lat1 = latlongtoken.value.split(", ")[0];
+        long1 = latlongtoken.value.split(", ")[1];
+    } else {
+        console.log("No lat long data");
+        return;
+    }
+    
+    var locationtoken = document.getElementById("locationtoken");
+    if (locationtoken != null && locationtoken.value != "") {
+        // each section of data[4] is info to create a marker
+        // lat, long, name, id
+        // id used to allow markers to link to the object.html
+        var data = locationtoken.value.split(", ");
+        for (var i = 0; i < data.length; i+=4) {
+            var lat2 = parseFloat(data[i]);
+            var long2 = parseFloat(data[i+1]);
+            var name = (data[i+2]);
+            var id = parseFloat(data[i+3]);
+
+            if (location_id != id) {
+                continue;
+            }
+
+            var distance = haversine(lat1, long1, lat2, long2);
+            element.innerHTML = parseFloat(distance).toFixed(2) + " km";
+            console.log(name)
+        }
+    } else {
+        console.log("No location data");
+        return;
+    }
+}
+
+function haversine(lat1, long1, lat2, long2) {
+    // GeekForGeeks website - https://www.geeksforgeeks.org/haversine-formula-to-find-distance-between-two-points-on-a-sphere/
+    // distance between latitudes
+    // and longitudes
+    let dLat = (lat2 - lat1) * Math.PI / 180.0;
+    let dLon = (long2 - long1) * Math.PI / 180.0;
+        
+    // convert to radiansa
+    lat1 = (lat1) * Math.PI / 180.0;
+    lat2 = (lat2) * Math.PI / 180.0;
+        
+    // apply formulae
+    let a = Math.pow(Math.sin(dLat / 2), 2) +
+                Math.pow(Math.sin(dLon / 2), 2) *
+                Math.cos(lat1) *
+                Math.cos(lat2);
+    let rad = 6371;
+    let c = 2 * Math.asin(Math.sqrt(a));
+    return rad * c;
 }

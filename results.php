@@ -155,6 +155,9 @@
 							<th id="tblCenter" onclick="sortTable(0)">Center</th>
 							<th id="tblReviews" onclick="sortTable(1)">Reviews</th>
 							<th id="tblAddress" onclick="sortTable(2)">Address</th>
+							<?php if (isValidEntry($_GET['input_search_loc'])) { ?>
+							<th id="tblDistance" onclick="sortTable(3)">Distance</th>
+							<?php } ?>
 						</tr>
 					</thead>
 					<tbody>
@@ -192,6 +195,9 @@
 								<td><?php echo "<a href='object.php?id=" . $location_id . "'>" . $location_name . "</a>";  ?></td>
 								<td><?php echo ($val_ratings == 0 ? "" : "<b>" . $val_ratings . "</b> stars<br>") . $num_ratings . " reviews"; ?></td>
 								<td><?php echo $row['address']; ?></td>
+								<?php if (isValidEntry($_GET['input_search_loc'])) { ?>
+								<td id="<?php echo $location_id?>" ></td>
+								<?php } ?>
 							</tr>
 							<?php 
 							}
