@@ -61,9 +61,9 @@
 			function renderStarRatings($avgratings) {
 				$starrating = $avgratings;
 				for ($loopi = 0; $loopi < 5; $loopi++) {
-					if ($starrating > 1) {
+					if ($starrating >= 1) {
 						echo "<i class='material-icons'>star</i>";
-					} else if ($starrating > 0.5) {
+					} else if ($starrating >= 0.5) {
 						echo "<i class='material-icons'>star_half</i>";
 					} else {
 						echo "<i class='material-icons'>star_border</i>";
