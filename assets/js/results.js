@@ -170,6 +170,11 @@ function sortTable(columnNum) {
             let cell2 = rows[i+1].getElementsByTagName("TD")[columnNum];
             let cell2Value = extractDataFromCell(cell2.innerHTML, columnNum);
 
+            if (columnNum == 1 || columnNum == 3){
+                cell1Value = parseFloat(cell1Value);
+                cell2Value = parseFloat(cell2Value);
+            }
+
             if (sort == "asc") {
                 if (cell1Value > cell2Value) {
                     shouldSwap = true;
