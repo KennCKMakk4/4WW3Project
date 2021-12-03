@@ -15,7 +15,7 @@ Kenneth Mak, makk4, 001318946
 **Ranger's Watch** is an online database of archery centres, shops, and ranges. Users are able to search, view, rate, and submit new locations to the database.
 
 ## Database and Table Creation
-The SQL query for generating the Database and Table: `databaserangerswatch.sql`
+The SQL query for generating the Database and Table: `datamodel.sql`
 
 # Part Three
 ## Changes

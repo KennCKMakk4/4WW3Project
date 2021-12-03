@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 18.189.211.159:3306
--- Generation Time: Dec 03, 2021 at 06:22 AM
+-- Generation Time: Dec 03, 2021 at 06:51 AM
 -- Server version: 8.0.27-0ubuntu0.20.04.1
 -- PHP Version: 8.0.12
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `rangerswatch`
 --
+CREATE DATABASE IF NOT EXISTS `rangerswatch` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+USE `rangerswatch`;
 
 -- --------------------------------------------------------
 
