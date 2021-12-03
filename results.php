@@ -149,12 +149,12 @@
 			<!-- Next section: -->
 			<div class="main_section">
 				<!-- table of results-->
-				<table class="results_table">
+				<table id="results_table" class="results_table">
 					<thead>
 						<tr>
-							<th>Center</th>
-							<th>Reviews</th>
-							<th>Address</th>
+							<th id="tblCenter" onclick="sortTable(0)">Center</th>
+							<th id="tblReviews" onclick="sortTable(1)">Reviews</th>
+							<th id="tblAddress" onclick="sortTable(2)">Address</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -190,7 +190,7 @@
 						?>
 							<tr onmouseover="setMarkerTo(this)">
 								<td><?php echo "<a href='object.php?id=" . $location_id . "'>" . $location_name . "</a>";  ?></td>
-								<td><?php echo "Rating: " . ($val_ratings == 0 ? "None" : $val_ratings) . "<br>" . $num_ratings . " reviews"; ?></td>
+								<td><?php echo ($val_ratings == 0 ? "" : "<b>" . $val_ratings . "</b> stars<br>") . $num_ratings . " reviews"; ?></td>
 								<td><?php echo $row['address']; ?></td>
 							</tr>
 							<?php 

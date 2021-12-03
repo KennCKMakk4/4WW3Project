@@ -80,11 +80,11 @@ function findMarkers() {
 
 // On hover over this table row, we center the map on that location
 function setMarkerTo(element) {
-    var contentsInColumn1 = element.children[0].innerHTML;
-    if (!contentsInColumn1) 
+    var contentsInColumn0 = element.children[0].innerHTML;
+    if (!contentsInColumn0) 
         return;
     // removing <a>name</a> tags
-    var name = contentsInColumn1.split(">")[1].split("<")[0];
+    var name = extractDataFromCell(contentsInColumn0, 0);
 
     // finding name from our token data to re-get latlong we used at the very beginning
     var data = locationtoken.value.split(", ");
@@ -98,6 +98,7 @@ function setMarkerTo(element) {
         }
     }
 }
+
 // creates a marker with the latitude, longitude, location name, and the link to the location
 // atm we just link to the sample object
 function addMarker(lat, long, locName, locLink) {
@@ -112,4 +113,75 @@ function addMarkerNL(lat, long, locName) {
     L.marker([lat, long])
     .addTo(mymap)
     .bindPopup("<b>" + locName + "</b>")      // name in bold
+}
+
+var sort = "desc";
+function changeSort() {
+    if (sort == "asc")
+        sort = "desc";
+    else
+        sort = "asc";
+}
+
+function extractDataFromCell(data, columnNum) {
+    // name has <a> tags, ratings has <b>val</b> tags
+    // Location Name
+    if (columnNum == 0 ) {
+        return data.split(">")[1].split("<")[0];
+    }
+    // Location Reviews
+    if (columnNum == 1) {
+        // if we ever change formatting of of innerHTML in cell, we need to change this
+        if (data.includes(">") || data.includes("<"))
+            return data.split(">")[1].split("<")[0];
+        else
+            return data.split(" ")[0];
+
+    }
+    
+    // else; just return data as is
+    return data;
+}
+
+var lastSelectedColumn = "";
+function sortTable(columnNum) {
+    let table = document.getElementById("results_table");
+
+    if (lastSelectedColumn == columnNum) 
+        changeSort();
+    // name, rating, address
+    var rows = table.rows;
+    
+    var switching = true;
+    var shouldSwap;
+    while (switching) {
+        switching = false;
+        
+        for (var i = 1; i < (rows.length)-1; i++) {
+            shouldSwap = false;
+            let cell1 = rows[i].getElementsByTagName("TD")[columnNum];
+            let cell1Value = extractDataFromCell(cell1.innerHTML, columnNum);
+
+            let cell2 = rows[i+1].getElementsByTagName("TD")[columnNum];
+            let cell2Value = extractDataFromCell(cell2.innerHTML, columnNum);
+
+            if (sort == "asc") {
+                if (cell1Value > cell2Value) {
+                    shouldSwap = true;
+                    break;
+                }
+            } else {
+                if (cell1Value < cell2Value) {
+                    shouldSwap = true;
+                    break;
+                }
+            }
+        }
+
+        if (shouldSwap) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+        }
+    }
+    lastSelectedColumn = columnNum;
 }
